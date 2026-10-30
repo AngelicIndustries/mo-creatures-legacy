@@ -1,10 +1,8 @@
 package drzhark.mocreatures;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 
 import drzhark.mocreatures.entity.IMoCTameable;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -16,12 +14,11 @@ public class MoCPetData {
     private NBTTagList tamedList = new NBTTagList();
     private BitSet IDMap = new BitSet(Long.SIZE << 4);
     private final String ownerName;
-    private ArrayList<Integer> usedPetIds = new ArrayList();
 
     public MoCPetData(IMoCTameable pet)
     {
         ownerData.setTag("TamedList", tamedList);
-        ownerName = MoCreatures.isServer() ? pet.getOwnerName() : Minecraft.getMinecraft().thePlayer.getCommandSenderName();
+        ownerName = pet.getOwnerName();
         //ownerData.setName("PetData");
     }
 
@@ -29,8 +26,10 @@ public class MoCPetData {
     {
         ownerData = nbt;
         tamedList = nbt.getTagList("TamedList", 10);
+        ownerData.setTag("TamedList", tamedList);
         ownerName = owner;
         loadPetDataMap(nbt.getCompoundTag("PetIdData"));
+        ownerData.setTag("PetIdData", savePetDataMap());
     }
 
     public int addPet(IMoCTameable pet, NBTTagCompound petNBT)
@@ -57,16 +56,15 @@ public class MoCPetData {
 
     public boolean removePet(int id)
     {
+        if (id < 0) return false;
         for (int i = 0; i < tamedList.tagCount(); i++)
         {
             NBTTagCompound nbt = tamedList.getCompoundTagAt(i);
             if (nbt.hasKey("PetId") && nbt.getInteger("PetId") == id)
             {
                 tamedList.removeTag(i);
-                usedPetIds.remove(new Integer(id));
-                IDMap.clear(id); // clear bit so it can be reused again
-                if (usedPetIds.size() == 0)
-                    IDMap.clear(); // fixes bug with ID 0 not able to be used again
+                // Old saves may already contain duplicates; do not free an ID still in use.
+                if (getPetData(id) == null) IDMap.clear(id);
                 ownerData.setTag("PetIdData", savePetDataMap());
                 return true;
             }
@@ -133,20 +131,9 @@ public class MoCPetData {
      * @return the next free pet ID
      */
     public int getNextFreePetId() {
-        int next = 0;
-        while (true)
-        {
-            next = IDMap.nextClearBit(next);
-            if (usedPetIds.contains(new Integer(next)))
-            {
-                IDMap.set(next);
-            }
-            else
-            {
-                usedPetIds.add(new Integer(next));
-                return next;
-            }
-        }
+        int next = IDMap.nextClearBit(0);
+        IDMap.set(next);
+        return next;
     }
 
     public NBTTagCompound savePetDataMap()
@@ -168,11 +155,8 @@ public class MoCPetData {
 
     public void loadPetDataMap(NBTTagCompound compoundTag)
     {
-        if (compoundTag == null)
-        {
-            IDMap.clear();
-        }
-        else
+        IDMap.clear();
+        if (compoundTag != null)
         {
             int[] intArray = compoundTag.getIntArray("PetIdArray");
             for (int i = 0; i < intArray.length; i++)
@@ -182,16 +166,15 @@ public class MoCPetData {
                     IDMap.set(i * Integer.SIZE + j, (intArray[i] & (1 << j)) != 0);
                 }
             }
-            // populate our usedPetIds
-            int next = 0;
-            while (true)
+        }
+        // Legacy did not reserve the last allocated ID before saving its bitmap.
+        // Recover reservations from the records too, including pets stored in amulets.
+        for (int i = 0; i < tamedList.tagCount(); i++)
+        {
+            NBTTagCompound pet = tamedList.getCompoundTagAt(i);
+            if (pet.hasKey("PetId", 3) && pet.getInteger("PetId") >= 0)
             {
-                next = IDMap.nextClearBit(next);
-                if (!usedPetIds.contains(new Integer(next)))
-                {
-                    usedPetIds.add(new Integer(next));
-                }
-                else break;
+                IDMap.set(pet.getInteger("PetId"));
             }
         }
     }

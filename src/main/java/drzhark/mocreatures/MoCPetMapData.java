@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import drzhark.mocreatures.entity.IMoCTameable;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -56,10 +55,12 @@ public class MoCPetMapData extends WorldSavedData
 
     public void updateOwnerPet(IMoCTameable pet, NBTTagCompound petNBT)
     {
+        if (((Entity)pet).worldObj.isRemote) return;
         markDirty();
-        if (pet.getOwnerPetId() == -1 || petMap.get(pet.getOwnerName()) == null)
+        MoCPetData existingData = getPetData(pet.getOwnerName());
+        if (pet.getOwnerPetId() < 0 || existingData == null || existingData.getPetData(pet.getOwnerPetId()) == null)
         {
-            String owner = MoCreatures.isServer() ? pet.getOwnerName() : Minecraft.getMinecraft().thePlayer.getCommandSenderName();
+            String owner = pet.getOwnerName();
             MoCPetData petData = null;
             int id = -1;
             if (petMap.containsKey(owner))
@@ -176,6 +177,7 @@ public class MoCPetMapData extends WorldSavedData
     @Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
+        petMap.clear();
         Iterator iterator = par1NBTTagCompound.func_150296_c().iterator();
         while (iterator.hasNext())
         {
