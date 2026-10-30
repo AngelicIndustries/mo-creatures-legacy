@@ -1651,6 +1651,6 @@ public abstract class MoCEntityAnimal extends EntityAnimal implements IMoCEntity
     @Override
     public void riderIsDisconnecting(boolean flag)
     {
-        riderIsDisconnecting = true;
+        riderIsDisconnecting = flag;
     }
 }

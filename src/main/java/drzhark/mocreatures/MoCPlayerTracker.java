@@ -3,6 +3,7 @@ package drzhark.mocreatures;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import drzhark.mocreatures.entity.IMoCEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class MoCPlayerTracker
@@ -10,10 +11,11 @@ public class MoCPlayerTracker
     @SubscribeEvent
     public void onPlayerLogout(PlayerLoggedOutEvent event) {
         EntityPlayer player = event.player;
-        if (player.ridingEntity != null && (player.ridingEntity instanceof IMoCEntity))
+        Entity mount = player.ridingEntity;
+        if (!player.worldObj.isRemote && mount instanceof IMoCEntity && !mount.isDead
+                && mount.worldObj == player.worldObj && mount.riddenByEntity == player)
         {
-            IMoCEntity mocEntity = (IMoCEntity)player.ridingEntity;
-            mocEntity.riderIsDisconnecting(true);// = true;
+            ((IMoCEntity)mount).riderIsDisconnecting(true);
         }
     }
 }

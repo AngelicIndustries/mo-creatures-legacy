@@ -3,6 +3,7 @@ package drzhark.mocreatures;
 import java.util.Random;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.entity.MoCEntityAquatic;
 import drzhark.mocreatures.entity.ambient.MoCEntityBee;
@@ -23,7 +24,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
-import net.minecraftforge.common.DimensionManager;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -33,32 +34,36 @@ import net.minecraftforge.event.world.WorldEvent;;
 
 
 public class MoCEventHooks {
+    private World petDataWorld;
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event)
     {
-        // if overworld has been deleted or unloaded, reset our flag
-        if (event.world.provider.dimensionId == 0)
+        if (!event.world.isRemote && event.world == petDataWorld)
         {
+            MoCreatures.instance.mapData = null;
             MoCreatures.proxy.worldInitDone = false;
+            petDataWorld = null;
         }
     }
 
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event)
     {
-        if (DimensionManager.getWorld(0) != null && !MoCreatures.proxy.worldInitDone) // if overworld has loaded, use its mapstorage
+        if (event.world.isRemote || event.world.provider.dimensionId != 0) return;
+        if (event.world != petDataWorld || MoCreatures.instance.mapData == null)
         {
-            MoCPetMapData data = (MoCPetMapData)DimensionManager.getWorld(0).mapStorage.loadData(MoCPetMapData.class, "mocreatures");
+            MoCPetMapData data = (MoCPetMapData)event.world.mapStorage.loadData(MoCPetMapData.class, "mocreatures");
             if (data == null)
             {
                 data = new MoCPetMapData("mocreatures");
             }
 
-            DimensionManager.getWorld(0).mapStorage.setData("mocreatures", data);
-            DimensionManager.getWorld(0).mapStorage.saveAllData();
+            event.world.mapStorage.setData("mocreatures", data);
+            event.world.mapStorage.saveAllData();
             MoCreatures.instance.mapData = data;
             MoCreatures.proxy.worldInitDone = true;
+            petDataWorld = event.world;
         }
     }
     
@@ -140,6 +145,11 @@ public class MoCEventHooks {
     @SubscribeEvent
     public void entityJoinWorldEvent(EntityJoinWorldEvent event)
     {
+        // Login restores the saved mount after PlayerLoggedInEvent has already fired.
+        if (!event.world.isRemote && event.entity instanceof IMoCEntity)
+        {
+            ((IMoCEntity)event.entity).riderIsDisconnecting(false);
+        }
     	if (event.entity instanceof EntityCreeper)  //makes vanilla creepers afraid of kitties
     	{
     		EntityCreeper creeper = (EntityCreeper) event.entity;

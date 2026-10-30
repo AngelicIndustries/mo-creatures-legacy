@@ -1170,6 +1170,6 @@ public abstract class MoCEntityAquatic extends EntityWaterMob implements IMoCEnt
     @Override
     public void riderIsDisconnecting(boolean flag)
     {
-        riderIsDisconnecting = true;
+        riderIsDisconnecting = flag;
     }
 }

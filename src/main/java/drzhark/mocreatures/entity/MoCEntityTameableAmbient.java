@@ -218,7 +218,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
     @Override
     public void setDead()
     {
-        if (MoCreatures.isServer() && getIsTamed() && getHealth() > 0 && !riderIsDisconnecting && !MoCreatures.isMobConfinementLoaded)   // the "!MoCreatures.isMobConfinementLoaded" allows setDead() to work on tamed creatures if the Mob Confinement mod is loaded. This is so that the mob confinement items don't duplicate tamed creatures when they try to store them.
+        if (!worldObj.isRemote && getIsTamed() && getHealth() > 0 && !riderIsDisconnecting && !MoCreatures.isMobConfinementLoaded)   // the "!MoCreatures.isMobConfinementLoaded" allows setDead() to work on tamed creatures if the Mob Confinement mod is loaded. This is so that the mob confinement items don't duplicate tamed creatures when they try to store them.
         {
             return;
         }

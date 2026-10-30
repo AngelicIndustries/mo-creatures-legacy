@@ -1146,6 +1146,6 @@ public abstract class MoCEntityAmbient extends EntityAnimal  implements IMoCEnti
     @Override
     public void riderIsDisconnecting(boolean flag)
     {
-        riderIsDisconnecting = true;
+        riderIsDisconnecting = flag;
     }
 }
