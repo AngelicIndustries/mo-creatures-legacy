@@ -13,7 +13,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -136,52 +135,7 @@ public class CommandMoCPets extends CommandBase {
 
     public boolean teleportLoadedPet(WorldServer world, EntityPlayerMP player, int petId, String petName, ICommandSender par1ICommandSender)
     {
-        for (int j = 0; j < world.loadedEntityList.size(); j++)
-        {
-            Entity entity = (Entity) world.loadedEntityList.get(j);
-            // search for entities that are MoCEntityAnimal's
-            if (IMoCTameable.class.isAssignableFrom(entity.getClass()) && !((IMoCTameable)entity).getName().equals("") && ((IMoCTameable)entity).getOwnerPetId() == petId)
-            {
-                // grab the entity data
-                NBTTagCompound compound = new NBTTagCompound();
-                entity.writeToNBT(compound);
-                if (compound != null && compound.getString("Owner") != null)
-                {
-                    String owner = compound.getString("Owner");
-                    String name = compound.getString("Name");
-                    if (owner != null && owner.equalsIgnoreCase(player.getCommandSenderName()))
-                    {
-                        // check if in same dimension
-                        if (entity.dimension == player.dimension)
-                            entity.setPosition(player.posX, player.posY, player.posZ);
-                        else if (!player.worldObj.isRemote)// transfer entity to player dimension
-                        {
-                            Entity newEntity = EntityList.createEntityByName(EntityList.getEntityString(entity), player.worldObj);
-                            if (newEntity != null)
-                            {
-                                newEntity.copyDataFrom(entity, true); // transfer all existing data to our new entity
-                                newEntity.setPosition(player.posX, player.posY, player.posZ);
-                                DimensionManager.getWorld(player.dimension).spawnEntityInWorld(newEntity);
-                            }
-                            if (entity.riddenByEntity == null)
-                            {
-                                entity.isDead = true;
-                            }
-                            else // dismount players
-                            {
-                                entity.riddenByEntity.mountEntity(null);
-                                entity.isDead = true;
-                            }
-                            world.resetUpdateEntityTick();
-                            DimensionManager.getWorld(player.dimension).resetUpdateEntityTick();
-                        }
-                        par1ICommandSender.addChatMessage(new ChatComponentTranslation(EnumChatFormatting.GREEN + name + EnumChatFormatting.WHITE + " has been tp'd to location " + Math.round(player.posX) + ", " + Math.round(player.posY) + ", " + Math.round(player.posZ) + " in dimension " + player.dimension));
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        return MoCPetTeleport.teleportLoadedPet(world, player, petId, par1ICommandSender) == MoCPetTeleport.Result.SUCCESS;
     }
     public void sendCommandHelp(ICommandSender sender)
     {
