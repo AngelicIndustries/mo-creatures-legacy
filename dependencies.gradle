@@ -1,0 +1,21 @@
+dependencies {
+    // Upstream's pinned API; optional at runtime and never bundled or published as a dependency.
+    compileOnly(files("libs/Thaumcraft-1.7.10-4.2.2.0-api.jar"))
+
+    runtimeOnlyNonPublishable("industries.angelic.wawelauth:WawelAuth:996a655-snapshot:dev")
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:Hodgepodge:2.7.216:dev")
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.8.157-GTNH:dev")
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:GTNHLib:0.11.52:dev")
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:ModularUI2:2.3.92-1.7.10:dev")
+    runtimeOnlyNonPublishable("ganymedes01.etfuturum:Et-Futurum-Requiem:2.6.60-GTNH:dev")
+    runtimeOnlyNonPublishable("curse.maven:archaicfix-677782:6785842")
+    runtimeOnlyNonPublishable("industries.angelic.angellib:AngelLib:1.0.0:dev")
+    runtimeOnlyNonPublishable("com.falsepattern:forgelin-mc1.7.10:2.4.3-2.4.10")
+    runtimeOnlyNonPublishable("com.falsepattern:falsepatternlib-mc1.7.10:1.12.2:dev")
+    runtimeOnlyNonPublishable("industries.angelic.vintageresourcify:VintageResourcify:1.0.6:dev") {
+        exclude group: "industries.angelic.angellib", module: "AngelLib"
+    }
+    runtimeOnlyNonPublishable("industries.angelic.vrap:vrap:1.0.2:dev")
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:Angelica:2.2.29:dev")
+    runtimeOnlyNonPublishable(rfg.deobf("curse.maven:catalogue-vintage-1465746:8384975"))
+}

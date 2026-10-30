@@ -1,0 +1,12 @@
+// Add any additional repositories for your dependencies here.
+
+repositories {
+    maven {
+        name = "Angelic Maven"
+        url "https://maven.angelic.industries/releases"
+    }
+    maven {
+        name = "FalsePattern Releases"
+        url "https://mvn.falsepattern.com/releases"
+    }
+}

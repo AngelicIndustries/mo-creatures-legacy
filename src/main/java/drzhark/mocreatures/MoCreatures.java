@@ -161,8 +161,16 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-@Mod(modid = "MoCreatures", name = "Mo' Creatures Legacy", version = "1.2")
+@Mod(modid = MoCreatures.MODID, name = "Mo' Creatures Legacy", version = industries.angelic.mocreatures.Tags.VERSION,
+        acceptedMinecraftVersions = "[1.7.10]",
+        customProperties = {
+                @Mod.CustomProperty(k = "license", v = "GPLv3"),
+                @Mod.CustomProperty(k = "issueTrackerUrl", v = "https://github.com/AngelicIndustries/mo-creatures-legacy/issues"),
+                @Mod.CustomProperty(k = "iconFile", v = "assets/mocreatures/logo.png") })
 public class MoCreatures {
+
+    public static final String MODID = "MoCreatures";
+    public static final String MODGROUP = "industries.angelic";
 
     @Instance("MoCreatures")
     public static MoCreatures instance;
@@ -821,7 +829,7 @@ public class MoCreatures {
 	        	
 	        	try
 	        	{
-	        		Class<?> entityClass = Class.forName(fullyQualifiedEntityClass);
+                Class<? extends EntityLiving> entityClass = Class.forName(fullyQualifiedEntityClass).asSubclass(EntityLiving.class);
 	        		
 	        		mocEntityMap.replace
 	        		(
