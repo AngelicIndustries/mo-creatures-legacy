@@ -1,5 +1,6 @@
 package drzhark.mocreatures.command;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,19 +9,27 @@ import java.util.Collection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.MoCPetData;
+import drzhark.mocreatures.MoCPetMapData;
 import drzhark.mocreatures.entity.IMoCTameable;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.ISaveHandler;
+import net.minecraft.world.storage.MapStorage;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -34,6 +43,9 @@ public class PetTeleportTest {
         return Arrays.asList(new Object[][] { { "moctp" }, { "mocpets" } });
     }
 
+    @Rule public TemporaryFolder temporary = new TemporaryFolder();
+    private MoCPetMapData registry;
+    private ISaveHandler save;
     private final String command;
     private WorldServer source;
     private WorldServer destination;
@@ -70,11 +82,27 @@ public class PetTeleportTest {
         EntityList.stringToClassMapping.put("MoCTestTeleportPet", TestPet.class);
         TestPet.lastCreated = null;
         when(destination.spawnEntityInWorld(any(Entity.class))).thenReturn(true);
+        MoCreatures.instance = new MoCreatures();
+        registry = new MoCPetMapData("mocreatures");
+        MoCreatures.instance.mapData = registry;
+        NBTTagCompound owner = new NBTTagCompound();
+        NBTTagList pets = new NBTTagList();
+        pets.appendTag(record());
+        owner.setTag("TamedList", pets);
+        registry.getPetMap().put("Owner", new MoCPetData(owner, "Owner"));
+        File folder = temporary.newFolder();
+        save = mock(ISaveHandler.class);
+        when(save.getMapFileFromName(anyString())).thenAnswer(invocation -> new File(folder, invocation.getArgument(0) + ".dat"));
+        source.mapStorage = new MapStorage(save);
+        destination.mapStorage = source.mapStorage;
+        source.mapStorage.setData("mocreatures", registry);
+        source.mapStorage.saveAllData();
     }
 
     @After
     public void cleanup()
     {
+        MoCreatures.instance = null;
         EntityList.classToStringMapping.remove(TestPet.class);
         EntityList.stringToClassMapping.remove("MoCTestTeleportPet");
         TestPet.lastCreated = null;
@@ -169,6 +197,7 @@ public class PetTeleportTest {
     {
         when(destination.spawnEntityInWorld(any(Entity.class))).thenAnswer(invocation -> {
             assertFalse(pet.isDead);
+            assertEquals(0, registry.getPetData("Owner").getPetData(7).getInteger("Dimension"));
             assertSame(rider, pet.riddenByEntity);
             verify(rider, never()).mountEntity(any());
             return true;
@@ -205,6 +234,7 @@ public class PetTeleportTest {
         assertNull(TestPet.lastCreated);
         assertEquals(player.posX, pet.posX, 0);
         verify(source, never()).spawnEntityInWorld(any(Entity.class));
+        assertRegistryLocation(0);
     }
 
     @Test
@@ -273,6 +303,49 @@ public class PetTeleportTest {
         assertTrue(pet.isDead);
     }
 
+    @Test
+    public void destinationIsRegisteredImmediatelyAndInTheFirstSave()
+    {
+        assertTrue(teleport(source));
+        assertRegistryLocation(-17);
+        source.mapStorage.saveAllData();
+        MoCPetMapData loaded = (MoCPetMapData)new MapStorage(save).loadData(MoCPetMapData.class, "mocreatures");
+        assertEquals(-17, loaded.getPetData("Owner").getPetData(7).getInteger("Dimension"));
+        assertEquals(101, loaded.getPetData("Owner").getPetData(7).getTagList("Pos", 6).func_150309_d(0), 0);
+    }
+
+    @Test
+    public void immediateReturnTransferUpdatesTheSameRecord()
+    {
+        assertTrue(teleport(source));
+        destination.loadedEntityList.add(TestPet.lastCreated);
+        player.worldObj = source;
+        player.dimension = 0;
+        player.posX = -0.25;
+        player.posZ = -16.25;
+        when(source.spawnEntityInWorld(any(Entity.class))).thenReturn(true);
+        assertTrue(teleport(destination));
+        assertRegistryLocation(0);
+        assertEquals(1, registry.getPetData("Owner").getTamedList().tagCount());
+        assertEquals(pet.getUniqueID(), TestPet.lastCreated.getUniqueID());
+    }
+
+    private void assertRegistryLocation(int dimension)
+    {
+        NBTTagCompound record = registry.getPetData("Owner").getPetData(7);
+        assertEquals(dimension, record.getInteger("Dimension"));
+        assertEquals(Math.round(player.posX), record.getTagList("Pos", 6).func_150309_d(0), 0);
+        assertEquals(Math.round(player.posY), record.getTagList("Pos", 6).func_150309_d(1), 0);
+        assertEquals(Math.round(player.posZ), record.getTagList("Pos", 6).func_150309_d(2), 0);
+        assertEquals((int)Math.floor(player.posX / 16), record.getInteger("ChunkX"));
+        assertEquals((int)Math.floor(player.posY / 16), record.getInteger("ChunkY"));
+        assertEquals((int)Math.floor(player.posZ / 16), record.getInteger("ChunkZ"));
+        assertEquals("Pet", record.getString("Name"));
+        assertEquals("Owner", record.getString("Owner"));
+        assertEquals("saved chest contents", record.getCompoundTag("Payload").getString("InventoryMarker"));
+        assertTrue(registry.isDirty());
+    }
+
     private boolean teleport(WorldServer world)
     {
         return "moctp".equals(command)
@@ -290,6 +363,9 @@ public class PetTeleportTest {
     private void assertUnchanged()
     {
         assertFalse(pet.isDead);
+        NBTTagCompound record = registry.getPetData("Owner").getPetData(7);
+        assertEquals(0, record.getInteger("Dimension"));
+        assertEquals(4, record.getTagList("Pos", 6).func_150309_d(0), 0);
         assertSame(source, pet.worldObj);
         assertEquals(0, pet.dimension);
         assertEquals(4, pet.posX, 0);

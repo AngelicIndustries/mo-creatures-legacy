@@ -1,5 +1,6 @@
 package drzhark.mocreatures.command;
 
+import drzhark.mocreatures.MoCreatures;
 import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.utils.MoCLog;
 import net.minecraft.command.ICommandSender;
@@ -63,6 +64,7 @@ final class MoCPetTeleport {
             if (world == destination)
             {
                 entity.setPosition(player.posX, player.posY, player.posZ);
+                if (MoCreatures.instance.mapData != null) MoCreatures.instance.mapData.updateOwnerPetLocation(pet);
             }
             else if (!transfer(entity, world, destination, player))
             {
@@ -105,6 +107,7 @@ final class MoCPetTeleport {
         if (entity.ridingEntity != null) entity.mountEntity(null);
         // Do not use setDead(): healthy tamed pets deliberately ignore it.
         entity.isDead = true;
+        if (MoCreatures.instance.mapData != null) MoCreatures.instance.mapData.updateOwnerPetLocation((IMoCTameable)replacement);
         source.resetUpdateEntityTick();
         destination.resetUpdateEntityTick();
         return true;

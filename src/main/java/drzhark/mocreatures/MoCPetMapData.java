@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraftforge.common.DimensionManager;
@@ -116,6 +117,24 @@ public class MoCPetMapData extends WorldSavedData
                 }
             }
         }
+    }
+
+    /** Update a registered pet after an accepted move, before the next entity save. */
+    public void updateOwnerPetLocation(IMoCTameable pet)
+    {
+        Entity entity = (Entity)pet;
+        if (entity.worldObj.isRemote) return;
+        MoCPetData data = getPetData(pet.getOwnerName());
+        if (data == null) return;
+        NBTTagCompound record = data.getPetData(pet.getOwnerPetId());
+        if (record == null) return;
+        record.setTag("Pos", newDoubleNBTList(Math.round(entity.posX), Math.round(entity.posY) + entity.ySize, Math.round(entity.posZ)));
+        // setPosition does not update chunk membership until the world ticks the entity.
+        record.setInteger("ChunkX", MathHelper.floor_double(entity.posX / 16));
+        record.setInteger("ChunkY", MathHelper.floor_double(entity.posY / 16));
+        record.setInteger("ChunkZ", MathHelper.floor_double(entity.posZ / 16));
+        record.setInteger("Dimension", entity.worldObj.provider.dimensionId);
+        markDirty();
     }
 
     protected NBTTagList newDoubleNBTList(double ... par1ArrayOfDouble)

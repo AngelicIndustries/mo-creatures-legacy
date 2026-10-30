@@ -219,6 +219,53 @@ public class PetPersistenceTest {
         assertEquals(-1, ((IMoCTameable) entity).getOwnerPetId());
     }
 
+    @Test
+    public void immediateLocationUpdatePreservesMetadataAndIgnoresTheClient()
+    {
+        MoCPetMapData map = new MoCPetMapData("test");
+        MoCPetData data = owner(7);
+        data.setInAmulet(7, true);
+        data.getPetData(7).setString("Name", "Traveler");
+        map.getPetMap().put("Owner", data);
+        Entity entity = pet("Owner", 7);
+        entity.posX = -0.25;
+        entity.posY = 80;
+        entity.posZ = -16.25;
+        entity.worldObj.provider.dimensionId = -1;
+        entity.worldObj.isRemote = true;
+        NBTTagCompound before = (NBTTagCompound)data.getPetData(7).copy();
+        map.setDirty(false);
+        map.updateOwnerPetLocation((IMoCTameable)entity);
+        assertEquals(before, data.getPetData(7));
+        assertFalse(map.isDirty());
+        entity.worldObj.isRemote = false;
+        map.updateOwnerPetLocation((IMoCTameable)entity);
+        NBTTagCompound record = data.getPetData(7);
+        assertEquals(-1, record.getInteger("Dimension"));
+        assertEquals(-1, record.getInteger("ChunkX"));
+        assertEquals(-2, record.getInteger("ChunkZ"));
+        assertEquals("Traveler", record.getString("Name"));
+        assertTrue(record.getBoolean("InAmulet"));
+        assertEquals(7, ((IMoCTameable)entity).getOwnerPetId());
+        assertTrue(map.isDirty());
+    }
+
+    @Test
+    public void locationOnlyUpdateDoesNotAllocateMissingRecords()
+    {
+        MoCPetMapData map = new MoCPetMapData("test");
+        Entity entity = pet("Owner", 7);
+        map.setDirty(false);
+        map.updateOwnerPetLocation((IMoCTameable)entity);
+        assertTrue(map.getPetMap().isEmpty());
+        map.getPetMap().put("Owner", owner(0));
+        map.updateOwnerPetLocation((IMoCTameable)entity);
+        assertNull(map.getPetData("Owner").getPetData(7));
+        assertEquals(1, map.getPetData("Owner").getTamedList().tagCount());
+        assertEquals(7, ((IMoCTameable)entity).getOwnerPetId());
+        assertFalse(map.isDirty());
+    }
+
     private static MoCPetData owner(int... ids)
     {
         return new MoCPetData(rootWithPets(ids), "Owner");

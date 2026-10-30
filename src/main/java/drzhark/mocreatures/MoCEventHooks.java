@@ -3,6 +3,7 @@ package drzhark.mocreatures;
 import java.util.Random;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.IMoCTameable;
 import drzhark.mocreatures.entity.MoCEntityAquatic;
@@ -35,6 +36,18 @@ import net.minecraftforge.event.world.WorldEvent;;
 
 public class MoCEventHooks {
     private World petDataWorld;
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onWorldSave(WorldEvent.Save event)
+    {
+        // Vanilla saves map data before chunks; pet serialization can dirty it again.
+        if (!event.world.isRemote && petDataWorld != null
+                && event.world.mapStorage == petDataWorld.mapStorage
+                && MoCreatures.instance.mapData != null && MoCreatures.instance.mapData.isDirty())
+        {
+            petDataWorld.mapStorage.saveAllData();
+        }
+    }
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event)
