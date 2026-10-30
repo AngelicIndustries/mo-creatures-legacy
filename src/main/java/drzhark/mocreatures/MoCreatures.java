@@ -26,6 +26,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -134,6 +135,7 @@ import drzhark.mocreatures.item.MoCItemTurtleSoup;
 import drzhark.mocreatures.item.MoCItemWeapon;
 import drzhark.mocreatures.item.MoCItemWhip;
 import drzhark.mocreatures.network.MoCMessageHandler;
+import drzhark.mocreatures.network.MoCServerPacketQueue;
 import drzhark.mocreatures.utils.MoCLog;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -519,6 +521,7 @@ public class MoCreatures {
         
         
         MoCMessageHandler.init();
+        FMLCommonHandler.instance().bus().register(new MoCServerPacketQueue());
         MinecraftForge.EVENT_BUS.register(new MoCEventHooks());
         proxy.ConfigInit(event);
         proxy.initTextures();
@@ -585,6 +588,7 @@ public class MoCreatures {
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event)
     {
+        MoCServerPacketQueue.start();
         proxy.initGUI();
         event.registerServerCommand(new CommandMoCTP());
         event.registerServerCommand(new CommandMoCPets());
@@ -594,6 +598,12 @@ public class MoCreatures {
     @EventHandler
     public void serverStarted(FMLServerStartedEvent event)
     {
+    }
+
+    @EventHandler
+    public void serverStopping(FMLServerStoppingEvent event)
+    {
+        MoCServerPacketQueue.stop();
     }
 
     public void registerEntities()

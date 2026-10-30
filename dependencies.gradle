@@ -1,4 +1,7 @@
 dependencies {
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito:mockito-core:4.11.0")
+
     // Upstream's pinned API; optional at runtime and never bundled or published as a dependency.
     compileOnly(files("libs/Thaumcraft-1.7.10-4.2.2.0-api.jar"))
 

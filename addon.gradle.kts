@@ -3,11 +3,22 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.api.tasks.testing.Test
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JavaToolchainService
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.jvm.tasks.Jar
 
 val sourceSets = extensions.getByType<SourceSetContainer>()
 val mainSourceSet = sourceSets.named("main").get()
+// Forge's EnumHelper uses Java 8 reflection internals outside the game launcher.
+val testToolchains = extensions.getByType<JavaToolchainService>()
+tasks.withType<Test>().configureEach {
+    javaLauncher.set(testToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    })
+}
+
 val wolfAltar = sourceSets.create("wolfAltar") {
     compileClasspath = mainSourceSet.compileClasspath
     runtimeClasspath = output + compileClasspath

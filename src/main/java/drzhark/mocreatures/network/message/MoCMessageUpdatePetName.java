@@ -1,23 +1,25 @@
 package drzhark.mocreatures.network.message;
 
-import java.lang.Character.UnicodeScript;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCreatures;
-import drzhark.mocreatures.entity.IMoCEntity;
 import drzhark.mocreatures.entity.IMoCTameable;
+import drzhark.mocreatures.network.MoCServerPacketQueue;
 import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.DecoderException;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-
 public class MoCMessageUpdatePetName implements IMessage, IMessageHandler<MoCMessageUpdatePetName, IMessage> {
+    private static final int MAX_NAME_LENGTH = 32;
+    private static final int MAX_NAME_BYTES = MAX_NAME_LENGTH * 4;
 
     String name;
     int entityId;
@@ -37,122 +39,101 @@ public class MoCMessageUpdatePetName implements IMessage, IMessageHandler<MoCMes
 
     @Override
     public void toBytes(ByteBuf buffer)
-    {	
-        
-        buffer.writeInt(findByteLengthOfString(name));
-        
-        
-        buffer.writeBytes(StandardCharsets.UTF_8.encode(name)); //encodes to UTF-8 before writeBytes to properly process special characters
-
-        
+    {
+        byte[] bytes = limitName(name).getBytes(StandardCharsets.UTF_8);
+        // Preserve Legacy's int-length, UTF-8 bytes, entity-id wire format.
+        buffer.writeInt(bytes.length);
+        buffer.writeBytes(bytes);
         buffer.writeInt(entityId);
     }
 
-	public static int findByteLengthOfString(String string)
-	{
-		int byteLength = 0;
-		
-		char[] characterArray = string.toCharArray();
-		
-		
-		for (char character : characterArray) //this loop goes through each character in the string and assigns them the amount of bytes they need
-    	{	
-    		
-    		UnicodeScript scriptThatCharacterIsWrittenIn = Character.UnicodeScript.of(character);
-    		
-    		if (scriptThatCharacterIsWrittenIn == Character.UnicodeScript.LATIN) //English characters
-    		{
-    			byteLength += 1;
-    		}
-    		
-    		if (Character.UnicodeBlock.of(character) == Character.UnicodeBlock.LATIN_1_SUPPLEMENT) //Latin characters needed for certain western languages (such as Spanish, German, Norwegian... ect)
-    		{
-    			byteLength += Character.charCount(Character.getNumericValue(character));
-    		}
-    		
-    		if (scriptThatCharacterIsWrittenIn == Character.UnicodeScript.GREEK
-    				|| scriptThatCharacterIsWrittenIn == Character.UnicodeScript.CYRILLIC //Russian
-    				|| scriptThatCharacterIsWrittenIn == Character.UnicodeScript.ARABIC
-    				|| scriptThatCharacterIsWrittenIn == Character.UnicodeScript.HEBREW
-    				)
-    		{
-    			byteLength += 2;
-    		}
-    		
-    		if (scriptThatCharacterIsWrittenIn == Character.UnicodeScript.HAN //Chinese
-    				|| scriptThatCharacterIsWrittenIn == Character.UnicodeScript.HIRAGANA //Japanese Hiragana
-    				|| scriptThatCharacterIsWrittenIn == Character.UnicodeScript.KATAKANA //Japanese Katakana
-    				|| scriptThatCharacterIsWrittenIn == Character.UnicodeScript.HANGUL //Korean
-    				|| scriptThatCharacterIsWrittenIn == Character.UnicodeScript.THAI
-    				|| scriptThatCharacterIsWrittenIn == Character.UnicodeScript.DEVANAGARI //Hindi or Sanskrit
-    				
-    				//Below are more characters required for certain eastern languages (such as Kanji for Japanese)
-    				|| Character.UnicodeBlock.of(character) == Character.UnicodeBlock.CJK_COMPATIBILITY
-    				|| Character.UnicodeBlock.of(character) == Character.UnicodeBlock.CJK_COMPATIBILITY_FORMS
-    				|| Character.UnicodeBlock.of(character) == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
-    				|| Character.UnicodeBlock.of(character) == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS_SUPPLEMENT
-    				|| Character.UnicodeBlock.of(character) == Character.UnicodeBlock.CJK_RADICALS_SUPPLEMENT
-    				|| Character.UnicodeBlock.of(character) == Character.UnicodeBlock.CJK_STROKES
-    				|| Character.UnicodeBlock.of(character) == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
-    				|| Character.UnicodeBlock.of(character) == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
-    				|| Character.UnicodeBlock.of(character) == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
-    				|| Character.UnicodeBlock.of(character) == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_B
-    				|| Character.UnicodeBlock.of(character) == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_C
-    				|| Character.UnicodeBlock.of(character) == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_D
-    				|| Character.UnicodeBlock.of(character) == Character.UnicodeBlock.ENCLOSED_CJK_LETTERS_AND_MONTHS
-    				)
-    		{
-    			byteLength += 3;
-    		}
-    	}
-		
-		return byteLength;
-	}
+    public static int findByteLengthOfString(String string)
+    {
+        return string.getBytes(StandardCharsets.UTF_8).length;
+    }
 
     @Override
     public void fromBytes(ByteBuf buffer)
     {
+        if (buffer.readableBytes() < 8)
+        {
+            throw new DecoderException("Truncated pet name packet");
+        }
         int nameLength = buffer.readInt();
-        
-        name = new String(buffer.readBytes(nameLength).array(), StandardCharsets.UTF_8); //set the encoding to UTF-8 within the string to properly output special characters
-        
+        if (nameLength < 0 || nameLength > MAX_NAME_BYTES || nameLength > buffer.readableBytes() - 4)
+        {
+            throw new DecoderException("Invalid pet name byte length");
+        }
+        try
+        {
+            name = StandardCharsets.UTF_8.newDecoder().decode(buffer.nioBuffer(buffer.readerIndex(), nameLength)).toString();
+        }
+        catch (CharacterCodingException exception)
+        {
+            throw new DecoderException("Invalid UTF-8 pet name", exception);
+        }
+        if (name.codePointCount(0, name.length()) > MAX_NAME_LENGTH)
+        {
+            throw new DecoderException("Pet name exceeds 32 characters");
+        }
+        buffer.skipBytes(nameLength);
         entityId = buffer.readInt();
     }
 
     @Override
     public IMessage onMessage(MoCMessageUpdatePetName message, MessageContext context)
     {
-        Entity pet = null;
-        List<Entity> entityList = context.getServerHandler().playerEntity.worldObj.loadedEntityList;
-        String ownerName = "";
-
-        for (Entity entity : entityList)
-        {
-            if (entity.getEntityId() == message.entityId && entity instanceof IMoCTameable)
-            {
-                ((IMoCEntity) entity).setName(message.name);
-                ownerName = ((IMoCEntity) entity).getOwnerName();
-                pet = entity;
-                break;
-            }
-        }
-        // update petdata
-        MoCPetData petData = MoCreatures.instance.mapData.getPetData(ownerName);
-        if (petData != null && pet != null && ((IMoCTameable)pet).getOwnerPetId() != -1)
-        {
-            int id = ((IMoCTameable)pet).getOwnerPetId();
-            NBTTagList tag = petData.getOwnerRootNBT().getTagList("TamedList", 10);
-            for (int index = 0; index < tag.tagCount(); index++)
-            {
-                NBTTagCompound nbt = tag.getCompoundTagAt(index);
-                if (nbt.getInteger("PetId") == id)
-                {
-                    nbt.setString("Name", message.name);
-                    ((IMoCTameable)pet).setName(message.name);
-                }
-            }
-        }
+        final int requestedEntityId = message.entityId;
+        final String requestedName = limitName(message.name);
+        MoCServerPacketQueue.enqueue(context.getServerHandler(), player -> renamePet(player, requestedEntityId, requestedName));
         return null;
+    }
+
+    private static String limitName(String name)
+    {
+        if (name == null)
+        {
+            return "";
+        }
+        return name.codePointCount(0, name.length()) <= MAX_NAME_LENGTH
+                ? name : name.substring(0, name.offsetByCodePoints(0, MAX_NAME_LENGTH));
+    }
+
+    // Ownership and persistence handling adapted from KAMKEEL commit 2d40166eeb892a60d71f8409a9324aa6710dea45.
+    private static void renamePet(EntityPlayerMP player, int entityId, String name)
+    {
+        Entity entity = player.worldObj.getEntityByID(entityId);
+        if (!(entity instanceof IMoCTameable) || entity.isDead)
+        {
+            return;
+        }
+        IMoCTameable pet = (IMoCTameable) entity;
+        String ownerName = pet.getOwnerName();
+        if (!pet.getIsTamed() || ownerName == null || !ownerName.equals(player.getCommandSenderName()))
+        {
+            return;
+        }
+        pet.setName(name);
+        if (MoCreatures.instance == null || MoCreatures.instance.mapData == null || pet.getOwnerPetId() == -1)
+        {
+            return;
+        }
+        MoCPetData petData = MoCreatures.instance.mapData.getPetData(ownerName);
+        if (petData == null)
+        {
+            return;
+        }
+        NBTTagList pets = petData.getOwnerRootNBT().getTagList("TamedList", 10);
+        for (int i = 0; i < pets.tagCount(); i++)
+        {
+            NBTTagCompound petTag = pets.getCompoundTagAt(i);
+            if (petTag.getInteger("PetId") == pet.getOwnerPetId())
+            {
+                petTag.setString("Name", name);
+                MoCreatures.instance.mapData.markDirty();
+                return;
+            }
+        }
     }
 
     @Override

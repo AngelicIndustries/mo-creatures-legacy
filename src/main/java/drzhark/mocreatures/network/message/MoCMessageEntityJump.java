@@ -4,7 +4,9 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import drzhark.mocreatures.entity.IMoCEntity;
+import drzhark.mocreatures.network.MoCServerPacketQueue;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
 
 public class MoCMessageEntityJump implements IMessage, IMessageHandler<MoCMessageEntityJump, IMessage> {
 
@@ -23,10 +25,13 @@ public class MoCMessageEntityJump implements IMessage, IMessageHandler<MoCMessag
     @Override
     public IMessage onMessage(MoCMessageEntityJump message, MessageContext context)
     {
-        if (context.getServerHandler().playerEntity.ridingEntity != null && context.getServerHandler().playerEntity.ridingEntity instanceof IMoCEntity)
-        {
-            ((IMoCEntity) context.getServerHandler().playerEntity.ridingEntity).makeEntityJump();
-        }
+        MoCServerPacketQueue.enqueue(context.getServerHandler(), player -> {
+            Entity mount = player.ridingEntity;
+            if (mount instanceof IMoCEntity && !mount.isDead && mount.riddenByEntity == player)
+            {
+                ((IMoCEntity) mount).makeEntityJump();
+            }
+        });
         return null;
     }
 
