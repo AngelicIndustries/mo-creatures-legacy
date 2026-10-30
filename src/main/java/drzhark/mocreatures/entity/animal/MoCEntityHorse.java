@@ -1728,6 +1728,9 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
 
 	private boolean interactIfItemstackIsAmulet(EntityPlayer entityPlayer, int horseType, Item item)
 	{
+        if (getVanishC() > 0) return true;
+        if (!getOwnerName().isEmpty() && !getOwnerName().equals(entityPlayer.getCommandSenderName())) return false;
+        if (worldObj.isRemote) return false;
 		if (isAmuletHorse())
 		{
 		    if ((horseType == 26 || horseType == 27 || horseType == 28) && item == MoCreatures.amuletBone)
@@ -2888,9 +2891,11 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
 
             if (getVanishC() > 100)
             {
-                setVanishC((byte) 101);
-                MoCTools.dropHorseAmuletWithNewPetInformation(this);
-                disappearHorse();
+                if (!worldObj.isRemote)
+                {
+                    if (MoCTools.dropHorseAmuletWithNewPetInformation(this)) disappearHorse();
+                    else setVanishC((byte) 80); // Retry delivery without losing the horse if item spawning is denied.
+                }
             }
 
             if (getVanishC() == 1)

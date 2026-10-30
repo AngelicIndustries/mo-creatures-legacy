@@ -5,15 +5,13 @@ import java.util.List;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import drzhark.mocreatures.MoCPetData;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
+import drzhark.mocreatures.utils.MoCLog;
 import drzhark.mocreatures.entity.MoCEntityTameableAnimal;
 import drzhark.mocreatures.entity.animal.MoCEntityHorse;
 import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAppear;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,158 +22,82 @@ import net.minecraft.world.World;
 
 public class MoCItemHorseAmulet extends MoCItem {
 
-    private int ageCounter;
-    private String name;
-    private float maxHealth;
-    private float health;
-    private int age;
-    private int creatureType;
-    private int spawnClass;
-    private boolean isRideable;
-    private byte armor;
-    private boolean isAdult;
-    private String ownerName;
-    private int petId;
-    
+    private MoCAmuletData legacyData;
+
     public MoCItemHorseAmulet(String name)
     {
         super(name);
         maxStackSize = 1;
         setHasSubtypes(true);
-        ageCounter = 0;
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World worldObj, EntityPlayer entityPlayer)
     {
-    	//if the player using the amulet is not the owner
-        if (ownerName.length() > 0 && !(ownerName.equals(entityPlayer.getCommandSenderName())) && MoCreatures.instance.mapData != null)
+        if (worldObj.isRemote || itemStack.getItemDamage() == 0) return itemStack;
+        MoCAmuletData data = new MoCAmuletData(itemStack.stackTagCompound, itemStack.getItemDamage(), true);
+        if (!data.belongsTo(entityPlayer.getCommandSenderName())) return itemStack;
+        ItemStack empty = emptyAmulet(data.creatureType);
+        if (empty == null) return itemStack;
+        ItemStack result = itemStack;
+        MoCEntityTameableAnimal storedCreature = null;
+        try
         {
-        	return itemStack;
-        }
-    	
-        if (++ageCounter < 2) { return itemStack; }
-
-        int amuletDurability = itemStack.getItemDamage();
-
-        if (MoCreatures.isServer())
-        {
-            initAndReadNBT(itemStack);
-        }
-        
-        if (spawnClass == 21 || spawnClass == 0) // horses or old amulets
-        {
-            //dirty fix for old amulets
-            spawnClass = 22;
-            if (spawnClass == 0 || creatureType == 0)
+            storedCreature = createHorse(worldObj);
+            if (storedCreature == null) return itemStack;
+            double angle = Math.toRadians(entityPlayer.rotationYaw - 90F);
+            storedCreature.setPosition(entityPlayer.posX - 3 * Math.cos(angle), entityPlayer.posY, entityPlayer.posZ - 3 * Math.sin(angle));
+            data.restoreHorse(storedCreature, entityPlayer.getCommandSenderName());
+            if (storedCreature.isDead || !worldObj.spawnEntityInWorld(storedCreature) || storedCreature.isDead)
             {
-                creatureType = amuletDurability;
-                spawnClass = 22;
-                age = 100;
-                maxHealth = 20;
-                health = 20;
-                armor = 0;
-                name = "";
-                ownerName = "";
-                isRideable = false;
-                isAdult = true;
+                storedCreature.isDead = true;
+                return itemStack;
             }
+            // Consume the filled amulet before optional effects can throw.
+            result = empty;
+            entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, empty);
+            MoCTools.recordAmuletState(storedCreature, false);
+            onReleased(storedCreature, entityPlayer);
         }
-
-        if (amuletDurability != 0)
+        catch (Exception exception)
         {
+            if (result == itemStack && storedCreature != null) storedCreature.isDead = true;
+            MoCLog.logger.warn("Error releasing horse from amulet", exception);
+        }
+        return result;
+    }
 
-            double dist = 3D;
-            double newPosY = entityPlayer.posY;
-            double newPosX = entityPlayer.posX - (dist * Math.cos((MoCTools.realAngle(entityPlayer.rotationYaw - 90F)) / 57.29578F));
-            double newPosZ = entityPlayer.posZ - (dist * Math.sin((MoCTools.realAngle(entityPlayer.rotationYaw - 90F)) / 57.29578F));
+    protected MoCEntityTameableAnimal createHorse(World world)
+    {
+        return new MoCEntityHorse(world);
+    }
 
-            if (MoCreatures.isServer())
-            {
-                try
-                {
-                    MoCEntityTameableAnimal storedCreature = new MoCEntityHorse(worldObj); 
-                    storedCreature.setPosition(newPosX, newPosY, newPosZ);
-                    storedCreature.setType(creatureType);
-                    storedCreature.setTamed(true);
-                    storedCreature.setRideable(isRideable);
-                    storedCreature.setMoCAge(age);
-                    storedCreature.setName(name);
-                    storedCreature.setArmorType(armor);
-                    ((EntityLiving) storedCreature).getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(maxHealth);
-                    storedCreature.setHealth(health);
-                    storedCreature.setAdult(isAdult);
-                    storedCreature.setOwnerPetId(petId);
-                    storedCreature.setOwner(entityPlayer.getCommandSenderName());
+    private ItemStack emptyAmulet(int type)
+    {
+        if (type == 26 || type == 27 || type == 28) return new ItemStack(MoCreatures.amuletBone, 1, 0);
+        if (type == 21 || type == 22) return new ItemStack(MoCreatures.amuletGhost, 1, 0);
+        if (type > 47 && type < 60) return new ItemStack(MoCreatures.amuletFairy, 1, 0);
+        if (type == 39 || type == 40) return new ItemStack(MoCreatures.amuletPegasus, 1, 0);
+        return null;
+    }
 
-                    if (entityPlayer.worldObj.spawnEntityInWorld(storedCreature))
-                    {
-                        MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAppear(storedCreature.getEntityId()), new TargetPoint(entityPlayer.worldObj.provider.dimensionId, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, 64));
-                        MoCTools.playCustomSound(storedCreature, "appearmagic", worldObj);
-                        //gives an empty amulet
-                        if (creatureType == 26 || creatureType == 27 || creatureType == 28)
-                        {
-                            entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, new ItemStack(MoCreatures.amuletBone, 1, 0));
-                        }
-                        else if (creatureType == 21 || creatureType == 22)
-                        {
-                            entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, new ItemStack(MoCreatures.amuletGhost, 1, 0));
-                        }
-                        else if ((creatureType > 47 && creatureType < 60))
-                        {
-                            entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, new ItemStack(MoCreatures.amuletFairy, 1, 0));
-                        }
-                        else if (creatureType == 39 || creatureType == 40)
-                        {
-                            entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, new ItemStack(MoCreatures.amuletPegasus, 1, 0));
-                        }
-                        MoCPetData petData = MoCreatures.instance.mapData.getPetData(storedCreature.getOwnerName());
-                        if (petData != null)
-                        {
-                            petData.setInAmulet(storedCreature.getOwnerPetId(), false);
-                        }
-                    }
-                }catch (Exception ex) 
-                {
-                    System.out.println("Error spawning creature from amulet " + ex);
-                }
-            }
-            ageCounter = 0;
-       }
-
-        return itemStack;
+    protected void onReleased(MoCEntityTameableAnimal storedCreature, EntityPlayer entityPlayer)
+    {
+        World worldObj = storedCreature.worldObj;
+        MoCMessageHandler.INSTANCE.sendToAllAround(new MoCMessageAppear(storedCreature.getEntityId()), new TargetPoint(worldObj.provider.dimensionId, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, 64));
+        MoCTools.playCustomSound(storedCreature, "appearmagic", worldObj);
     }
 
     public void readFromNBT(NBTTagCompound nbt)
     {
-        petId = nbt.getInteger("PetId");
-        creatureType = nbt.getInteger("CreatureType");
-        maxHealth = nbt.getFloat("MaxHealth");
-        health = nbt.getFloat("Health");
-        age = nbt.getInteger("Age");
-        name = nbt.getString("Name");
-        spawnClass = nbt.getInteger("SpawnClass");
-        isRideable = nbt.getBoolean("Rideable");
-        armor = nbt.getByte("Armor");
-        isAdult = nbt.getBoolean("Adult");
-        ownerName = nbt.getString("OwnerName");
+        legacyData = new MoCAmuletData(nbt, 0, true);
     }
-    
+
     public void writeToNBT(NBTTagCompound nbt)
     {
-        nbt.setInteger("PetID", petId);
-        nbt.setInteger("CreatureType", creatureType);
-        nbt.setFloat("MaxHealth", maxHealth);
-        nbt.setFloat("Health", health);
-        nbt.setInteger("Age", age);
-        nbt.setString("Name", name);
-        nbt.setInteger("SpawnClass", spawnClass);
-        nbt.setBoolean("Rideable", isRideable);
-        nbt.setByte("Armor", armor);
-        nbt.setBoolean("Adult", isAdult);
-        nbt.setString("OwnerName", ownerName);
+        if (legacyData != null) legacyData.writeToNBT(nbt);
     }
-    
+
     @SideOnly(Side.CLIENT)
 
     /**
@@ -184,19 +106,10 @@ public class MoCItemHorseAmulet extends MoCItem {
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
-        initAndReadNBT(itemStack);
-        if (name.length() > 0) par3List.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("entity.MoCreatures.Horse.name")); //Writes the name of the entity type to item desc
-        if (name.length() > 0) par3List.add(EnumChatFormatting.BLUE + name); //writes the pet name to item desc
-        if (ownerName.length() > 0) par3List.add(EnumChatFormatting.DARK_BLUE + ((new ChatComponentTranslation("amulet_and_fishnet_desc.MoCreatures.ownedBy", new Object[] {ownerName})).getUnformattedTextForChat())); //writes "owned by OWNER" (dependent on lang files)in item desc
+        MoCAmuletData data = new MoCAmuletData(itemStack.stackTagCompound, itemStack.getItemDamage(), true);
+        if (data.name.length() > 0) par3List.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("entity.MoCreatures.Horse.name")); //Writes the name of the entity type to item desc
+        if (data.name.length() > 0) par3List.add(EnumChatFormatting.BLUE + data.name); //writes the pet name to item desc
+        if (data.ownerName.length() > 0) par3List.add(EnumChatFormatting.DARK_BLUE + ((new ChatComponentTranslation("amulet_and_fishnet_desc.MoCreatures.ownedBy", new Object[] {data.ownerName})).getUnformattedTextForChat())); //writes "owned by OWNER" (dependent on lang files)in item desc
     }
     
-    private void initAndReadNBT(ItemStack itemStack)
-    {
-        if( itemStack.stackTagCompound == null )
-        {
-            itemStack.setTagCompound(new NBTTagCompound());
-        }
-        NBTTagCompound nbtcompound = itemStack.stackTagCompound;
-        readFromNBT(nbtcompound);
-    }
 }

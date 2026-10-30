@@ -176,24 +176,12 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         if (itemStack != null && itemStack.getItem() == MoCreatures.fishNet && itemStack.getItemDamage() == 0 && canBeTrappedInNet()) 
         {
         	//if the player using the amulet is not the owner
-	        if (getOwnerName().length() > 0 && !(getOwnerName().equals(entityPlayer.getCommandSenderName())) && MoCreatures.instance.mapData != null)
+	        if (getOwnerName().length() > 0 && !(getOwnerName().equals(entityPlayer.getCommandSenderName())))
 	        {
 	        	return false;
 	        }
         	
-            entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, null);
-            if (MoCreatures.isServer())
-            {
-                MoCPetData petData = MoCreatures.instance.mapData.getPetData(getOwnerName());
-                if (petData != null)
-                {
-                    petData.setInAmulet(getOwnerPetId(), true);
-                }
-                MoCTools.dropAmuletWithNewPetInformation(this, 1);
-                isDead = true;
-            }
-
-            return true;
+            return MoCTools.captureInAmulet(this, entityPlayer, 1, () -> {});
         }
         
         
@@ -277,7 +265,7 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
         super.readEntityFromNBT(nbtTagCompound);
         if (nbtTagCompound.hasKey("PetId"))
             setOwnerPetId(nbtTagCompound.getInteger("PetId"));
-        if (getIsTamed() && nbtTagCompound.hasKey("PetId"))
+        if (!worldObj.isRemote && getIsTamed() && nbtTagCompound.hasKey("PetId") && MoCreatures.instance.mapData != null)
         {
             MoCPetData petData = MoCreatures.instance.mapData.getPetData(getOwnerName());
             if (petData != null)
@@ -289,12 +277,13 @@ public class MoCEntityTameableAmbient extends MoCEntityAmbient implements IMoCTa
                     if (nbt.getInteger("PetId") == nbtTagCompound.getInteger("PetId"))
                     {
                         // update amulet flag
-                        nbt.setBoolean("InAmulet", false);
+                        MoCreatures.instance.mapData.setInAmulet(this, false);
                         // check if cloned and if so kill
                         if (nbt.hasKey("Cloned"))
                         {
                             // entity was cloned
                             nbt.removeTag("Cloned"); // clear flag
+                            MoCreatures.instance.mapData.markDirty();
                             setTamed(false);
                             setDead();
                         }

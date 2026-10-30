@@ -39,6 +39,17 @@ public class MoCPetMapData extends WorldSavedData
         return petMap;
     }
 
+    public void setInAmulet(IMoCTameable pet, boolean flag)
+    {
+        if (((Entity)pet).worldObj.isRemote) return;
+        MoCPetData data = getPetData(pet.getOwnerName());
+        if (data != null && data.getPetData(pet.getOwnerPetId()) != null && data.getInAmulet(pet.getOwnerPetId()) != flag)
+        {
+            data.setInAmulet(pet.getOwnerPetId(), flag);
+            markDirty();
+        }
+    }
+
     public boolean removeOwnerPet(IMoCTameable pet, int petId)
     {
         if (petMap.get(pet.getOwnerName()) != null) // required since getInteger will always return 0 if no key is found

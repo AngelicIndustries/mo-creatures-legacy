@@ -1714,14 +1714,14 @@ public class MoCTools {
      * Drops an amulet with the stored information of the entity passed
      * @param entity
      */
-    public static void dropHorseAmuletWithNewPetInformation(MoCEntityTameableAnimal entity)
+    public static boolean dropHorseAmuletWithNewPetInformation(MoCEntityTameableAnimal entity)
     {
-        if (MoCreatures.isServer())
+        if (!((Entity)entity).worldObj.isRemote)
         {
             ItemStack stack = getProperAmulet(entity);
             if (stack == null) 
             {
-                return;
+                return false;
             }
             if( stack.stackTagCompound == null )
             {
@@ -1731,6 +1731,7 @@ public class MoCTools {
 
             try
             {
+                recordAmuletState(entity, false);
                 nbtTagCompound.setInteger("SpawnClass", 21);
                 nbtTagCompound.setFloat("MaxHealth", ((float) ((EntityLiving) entity).getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue()));
                 nbtTagCompound.setFloat("Health", entity.getHealth());
@@ -1745,29 +1746,21 @@ public class MoCTools {
             }
             catch (Exception e)
             {
+                MoCLog.logger.warn("Unable to store horse in amulet", e);
+                return false;
             }
             
-            EntityPlayer ownerOfCreature = entity.worldObj.getPlayerEntityByName(entity.getOwnerName());
-
-            if (ownerOfCreature != null && ownerOfCreature.inventory.getFirstEmptyStack() != -1) // don't attempt to set if player inventory is full
-            {
-                ownerOfCreature.inventory.addItemStackToInventory(stack);
-            }
-            else
-            {
-                EntityItem entityItem = new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, stack);
-                entityItem.delayBeforeCanPickup = 20;
-                entity.worldObj.spawnEntityInWorld(entityItem);
-            }
+            return deliverFilledAmulet(entity, stack);
         }
+        return false;
     }
 
     /**
      * Drops a new amulet/fishnet with the stored information of the entity
      */
-    public static void dropAmuletWithNewPetInformation(IMoCTameable entity, int amuletType)
+    public static boolean dropAmuletWithNewPetInformation(IMoCTameable entity, int amuletType)
     {
-        if (MoCreatures.isServer())
+        if (!((Entity)entity).worldObj.isRemote)
         {
             ItemStack stack = new ItemStack(MoCreatures.fishNet, 1, 1); 
             if (amuletType == 2)
@@ -1783,6 +1776,7 @@ public class MoCTools {
 
             try
             {
+                recordAmuletState(entity, false);
                 String petClass = entity.getClass().getSimpleName().replace("MoCEntity", "");
                 if (petClass.equalsIgnoreCase("Horse"))
                 {
@@ -1804,21 +1798,67 @@ public class MoCTools {
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                MoCLog.logger.warn("Unable to store creature in amulet", e);
+                return false;
             }
 
-            EntityPlayer epOwner = ((EntityLivingBase)entity).worldObj.getPlayerEntityByName(entity.getOwnerName());
-            if (epOwner != null)
+            return deliverFilledAmulet((EntityLiving)entity, stack);
+        }
+        return false;
+    }
+
+    public static boolean captureInAmulet(IMoCTameable pet, EntityPlayer player, int type, Runnable dropEquipment)
+    {
+        Entity entity = (Entity)pet;
+        if (entity.worldObj.isRemote) return true;
+        if (entity.isDead || (!pet.getOwnerName().isEmpty() && !pet.getOwnerName().equals(player.getCommandSenderName()))) return false;
+        if (!dropAmuletWithNewPetInformation(pet, type)) return false;
+        player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+        entity.isDead = true;
+        dropEquipment.run();
+        return true;
+    }
+
+    public static void recordAmuletState(IMoCTameable pet, boolean inAmulet)
+    {
+        Entity entity = (Entity)pet;
+        if (entity.worldObj.isRemote || !pet.getIsTamed() || pet.getOwnerName().isEmpty()
+                || MoCreatures.instance == null || MoCreatures.instance.mapData == null) return;
+        NBTTagCompound nbt = new NBTTagCompound();
+        entity.writeToNBT(nbt);
+        // Capture can happen before the first world save has allocated a pet ID.
+        MoCreatures.instance.mapData.updateOwnerPet(pet, nbt);
+        MoCreatures.instance.mapData.setInAmulet(pet, inAmulet);
+    }
+
+    public static boolean deliverFilledAmulet(EntityLiving entity, ItemStack stack)
+    {
+        if (entity.worldObj.isRemote) return false;
+        IMoCTameable pet = (IMoCTameable)entity;
+        EntityPlayer owner = entity.worldObj.getPlayerEntityByName(pet.getOwnerName());
+        // Filled amulets are unstackable; creative inventory insertion can silently discard them when full.
+        if (owner == null || owner.inventory.getFirstEmptyStack() < 0 || !owner.inventory.addItemStackToInventory(stack))
+        {
+            EntityItem dropped = new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, stack);
+            dropped.delayBeforeCanPickup = 20;
+            try
             {
-                epOwner.inventory.addItemStackToInventory(stack);
+                if (!entity.worldObj.spawnEntityInWorld(dropped) || dropped.isDead)
+                {
+                    dropped.isDead = true;
+                    return false;
+                }
             }
-            else
+            catch (RuntimeException exception)
             {
-                EntityItem entityItem = new EntityItem(((EntityLivingBase)entity).worldObj, ((EntityLivingBase)entity).posX, ((EntityLivingBase)entity).posY, ((EntityLivingBase)entity).posZ, stack);
-                entityItem.delayBeforeCanPickup = 20;
-                ((EntityLivingBase)entity).worldObj.spawnEntityInWorld(entityItem);
+                dropped.isDead = true;
+                MoCLog.logger.warn("Unable to drop filled amulet", exception);
+                return false;
             }
         }
+        if (MoCreatures.instance != null && MoCreatures.instance.mapData != null)
+            MoCreatures.instance.mapData.setInAmulet(pet, true);
+        return true;
     }
 
     /**
