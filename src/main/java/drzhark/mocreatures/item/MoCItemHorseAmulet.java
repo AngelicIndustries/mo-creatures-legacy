@@ -48,6 +48,11 @@ public class MoCItemHorseAmulet extends MoCItem {
             double angle = Math.toRadians(entityPlayer.rotationYaw - 90F);
             storedCreature.setPosition(entityPlayer.posX - 3 * Math.cos(angle), entityPlayer.posY, entityPlayer.posZ - 3 * Math.sin(angle));
             data.restoreHorse(storedCreature, entityPlayer.getCommandSenderName());
+            if (data.creatureType >= 26 && data.creatureType <= 28 && storedCreature instanceof MoCEntityHorse)
+            {
+                // Include the fade in the spawn packet, before the client can render the horse.
+                ((MoCEntityHorse)storedCreature).startAmuletAppearance();
+            }
             if (storedCreature.isDead || !worldObj.spawnEntityInWorld(storedCreature) || storedCreature.isDead)
             {
                 storedCreature.isDead = true;

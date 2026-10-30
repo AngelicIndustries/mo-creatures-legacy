@@ -113,6 +113,7 @@ public class AmuletTest {
         MoCreatures.instance = null;
         MoCreatures.amuletGhost = null;
         MoCreatures.amuletGhostFull = null;
+        MoCreatures.amuletBone = null;
         MoCreatures.fishNet = null;
         MoCreatures.petAmulet = null;
     }
@@ -154,6 +155,27 @@ public class AmuletTest {
         assertNotNull(map.getPetData("Owner").getPetData(petId.get()));
         assertFalse(map.getPetData("Owner").getInAmulet(petId.get()));
         assertTrue(map.isDirty());
+        verify(pet, never()).startAmuletAppearance();
+    }
+
+    @Test
+    public void boneHorseFadeIsReadyBeforeSpawnAndOnlyForHorseAmulets()
+    {
+        MoCreatures.amuletBone = emptyItem;
+        doCallRealMethod().when(pet).startAmuletAppearance();
+        doCallRealMethod().when(pet).getAmuletFadeCounter();
+        when(world.spawnEntityInWorld(pet)).thenAnswer(invocation -> {
+            assertEquals(horse ? 100 : 0, pet.getAmuletFadeCounter());
+            return true;
+        });
+        for (int type : new int[] { 26, 27, 28 })
+        {
+            filled.setItemDamage(type);
+            filled.stackTagCompound.setInteger("CreatureType", type);
+            if (horse) filled.stackTagCompound.setInteger("SpawnClass", type);
+            assertSame(emptyItem, release().getItem());
+        }
+        verify(pet, times(horse ? 3 : 0)).startAmuletAppearance();
     }
 
     @Test

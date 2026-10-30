@@ -360,7 +360,7 @@ public class MoCModelNewHorse extends ModelBase {
         //super.render(entity, f, f1, f2, f3, f4, f5);
 
         int type = entityHorse.getType();
-        int vanishingInt = entityHorse.getVanishC();
+        int vanishingInt = entityHorse.getAmuletFadeCounter();
         int wingflapInt = entityHorse.wingFlapCounter;
         
         boolean flapwings = (entityHorse.wingFlapCounter != 0);
@@ -491,7 +491,7 @@ public class MoCModelNewHorse extends ModelBase {
 
         }
         else
-        //rendering a ghost or vanishing
+        //rendering a ghost or fading into/out of an amulet
         {
             float transparency; //= entityhorse.tFloat();
 

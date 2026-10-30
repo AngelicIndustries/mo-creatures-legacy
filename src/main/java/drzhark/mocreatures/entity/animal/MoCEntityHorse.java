@@ -5,6 +5,7 @@ import java.util.List;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import drzhark.mocreatures.MoCTools;
 import drzhark.mocreatures.MoCreatures;
@@ -15,6 +16,7 @@ import drzhark.mocreatures.network.MoCMessageHandler;
 import drzhark.mocreatures.network.message.MoCMessageAnimation;
 import drzhark.mocreatures.network.message.MoCMessageHeart;
 import drzhark.mocreatures.network.message.MoCMessageVanish;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.Block.SoundType;
 import net.minecraft.block.BlockColored;
@@ -46,7 +48,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.world.BlockEvent;
 
-public class MoCEntityHorse extends MoCEntityTameableAnimal {
+public class MoCEntityHorse extends MoCEntityTameableAnimal implements IEntityAdditionalSpawnData {
     private int gestationTime;
     private int countEating;
     private int textureCounter;
@@ -68,6 +70,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
     public int standCounter;
     public int tailCounter;
     public int vanishCounter;
+    private int amuletAppearanceEndTick;
     public int sprintCounter;
     public int transformType;
     public int transformCounter;
@@ -1223,6 +1226,35 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
         return (byte) vanishCounter;
     }
 
+    public void startAmuletAppearance()
+    {
+        amuletAppearanceEndTick = ticksExisted + 100;
+    }
+
+    /** Remaining transparency, using the capture animation's 100-tick scale. */
+    public int getAmuletFadeCounter()
+    {
+        return getVanishC() > 0 ? getVanishC() : getAmuletAppearanceTicks();
+    }
+
+    private int getAmuletAppearanceTicks()
+    {
+        return Math.max(0, amuletAppearanceEndTick - ticksExisted);
+    }
+
+    @Override
+    public void writeSpawnData(ByteBuf data)
+    {
+        data.writeInt(getAmuletAppearanceTicks());
+    }
+
+    @Override
+    public void readSpawnData(ByteBuf data)
+    {
+        // Start with the remaining fade even when a client begins tracking late.
+        amuletAppearanceEndTick = ticksExisted + MathHelper.clamp_int(data.readInt(), 0, 100);
+    }
+
     /**
      * Breeding rules for the horses
      * 
@@ -2192,7 +2224,7 @@ public class MoCEntityHorse extends MoCEntityTameableAnimal {
 	        		|| (riddenByEntity != null)
 	        		|| standCounter != 0
 	        		|| shuffleCounter != 0
-	        		|| getVanishC() != 0
+                || getAmuletFadeCounter() != 0
         		);
     }
 
