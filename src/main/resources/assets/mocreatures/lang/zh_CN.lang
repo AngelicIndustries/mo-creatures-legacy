@@ -38,7 +38,7 @@ item.bowlfish7.name=鱼缸
 item.bowlfish8.name=鱼缸
 item.bowlfish9.name=鱼缸
 item.bowlfish10.name=鱼缸
-item.bowlwater.name=满的鱼缸
+item.bowlwater.name=装满水的鱼缸
 item.builderhammer.name=建筑锤
 item.chitin.name=泥土蝎子甲壳
 item.chitinblack.name=洞穴蝎子甲壳
@@ -47,9 +47,9 @@ item.chitinnether.name=下界蝎子甲壳
 item.crabraw.name=生螃蟹
 item.crabcooked.name=煮熟的螃蟹
 item.elephantchest.name=大象储物箱
-item.elephantgarment.name=大象服装
+item.elephantgarment.name=象服
 item.elephantharness.name=大象挽具
-item.elephanthowdah.name=大象鞍座
+item.elephanthowdah.name=象轿
 item.essencedarkness.name=黑暗精华
 item.essencefire.name=火焰精华
 item.essencelight.name=光明精华
@@ -59,7 +59,7 @@ item.fur.name=毛皮
 item.furboots.name=毛皮靴子
 item.furhelmet.name=毛皮头盔
 item.furlegs.name=毛皮裤子
-item.furchest.name=毛皮外套
+item.furchest.name=毛皮胸甲
 item.haystack.name=干草堆
 item.heartdarkness.name=黑暗之心
 item.heartfire.name=火焰之心
@@ -68,27 +68,27 @@ item.hide.name=兽皮
 item.hideboots.name=兽皮靴子
 item.hidehelmet.name=兽皮头盔
 item.hidelegs.name=兽皮裤子
-item.hidechest.name=兽皮外套
+item.hidechest.name=兽皮胸甲
 item.horsearmorcrystal.name=水晶马铠
 item.horsesaddle.name=手工马鞍
 item.katana.name=武士刀
 item.key.name=钥匙
-item.kittybed.black.name=黑色猫咪床
-item.kittybed.red.name=红色猫咪床
-item.kittybed.green.name=绿色猫咪床
-item.kittybed.brown.name=棕色猫咪床
-item.kittybed.blue.name=蓝色猫咪床
-item.kittybed.purple.name=紫色猫咪床
-item.kittybed.cyan.name=青色猫咪床
-item.kittybed.silver.name=浅灰色猫咪床
-item.kittybed.gray.name=灰色猫咪床
-item.kittybed.pink.name=粉色猫咪床
-item.kittybed.lime.name=黄绿色猫咪床
-item.kittybed.yellow.name=黄色猫咪床
-item.kittybed.lightBlue.name=淡蓝色猫咪床
-item.kittybed.magenta.name=品红色猫咪床
-item.kittybed.orange.name=橙色猫咪床
-item.kittybed.white.name=白色猫咪床
+item.kittybed.black.name=黑色猫窝
+item.kittybed.red.name=红色猫窝
+item.kittybed.green.name=绿色猫窝
+item.kittybed.brown.name=棕色猫窝
+item.kittybed.blue.name=蓝色猫窝
+item.kittybed.purple.name=紫色猫窝
+item.kittybed.cyan.name=青色猫窝
+item.kittybed.silver.name=浅灰色猫窝
+item.kittybed.gray.name=灰色猫窝
+item.kittybed.pink.name=粉色猫窝
+item.kittybed.lime.name=黄绿色猫窝
+item.kittybed.yellow.name=黄色猫窝
+item.kittybed.lightBlue.name=淡蓝色猫窝
+item.kittybed.magenta.name=品红色猫窝
+item.kittybed.orange.name=橙色猫窝
+item.kittybed.white.name=白色猫窝
 item.kittylitter.name=猫砂盆
 item.mammothplatform.name=猛犸平台
 item.medallion.name=勋章
@@ -140,15 +140,15 @@ item.mocegg.80.name=鳀鱼蛋
 item.mocegg.81.name=神仙鱼蛋
 item.mocegg.82.name=金鱼蛋
 item.mocegg.83.name=鮟鱇鱼蛋
-item.mocegg.84.name=鳜鱼蛋
+item.mocegg.84.name=花斑鱼蛋
 item.mocegg.90.name=食人鱼蛋
 item.nunchaku.name=双节棍
-item.omelet.name=煎蛋卷
+item.omelet.name=煎蛋饼
 item.ostrichcooked.name=熟鸵鸟肉
 item.ostrichraw.name=生鸵鸟肉
-item.petamulet.name=宠物护身符
-item.petamuletfull.name=满级宠物护身符
-item.petfood.name=猫咪食物
+item.petamulet.name=宠物护符
+item.petamuletfull.name=宠物护符
+item.petfood.name=猫粮
 item.ratburger.name=大鼠汉堡
 item.ratcooked.name=熟大鼠肉
 item.ratraw.name=生大鼠肉
@@ -156,22 +156,22 @@ item.recordshuffle.name=斑马唱片
 item.record.recordshuffle.desc=Shuffling
 item.reptilehide.name=爬行动物皮革
 item.reptileboots.name=爬行动物靴子
-item.reptilelegs.name=爬行动物护腿
+item.reptilelegs.name=爬行动物裤子
 item.reptileplate.name=爬行动物胸甲
 item.reptilehelmet.name=爬行动物头盔
-item.sai.name=三叉戟
-item.scorpbootsdirt.name=泥土蝎子靴
-item.scorpbootscave.name=洞穴蝎子靴
-item.scorpbootsfrost.name=冰霜蝎子靴
-item.scorpbootsnether.name=下界蝎子靴
+item.sai.name=铁尺
+item.scorpbootsdirt.name=泥土蝎子靴子
+item.scorpbootscave.name=洞穴蝎子靴子
+item.scorpbootsfrost.name=冰霜蝎子靴子
+item.scorpbootsnether.name=下界蝎子靴子
 item.scorphelmetdirt.name=泥土蝎子头盔
 item.scorphelmetcave.name=洞穴蝎子头盔
 item.scorphelmetfrost.name=冰霜蝎子头盔
 item.scorphelmetnether.name=下界蝎子头盔
-item.scorplegsdirt.name=泥土蝎子护腿
-item.scorplegscave.name=洞穴蝎子护腿
-item.scorplegsfrost.name=冰霜蝎子护腿
-item.scorplegsnether.name=下界蝎子护腿
+item.scorplegsdirt.name=泥土蝎子裤子
+item.scorplegscave.name=洞穴蝎子裤子
+item.scorplegsfrost.name=冰霜蝎子裤子
+item.scorplegsnether.name=下界蝎子裤子
 item.scorpplatedirt.name=泥土蝎子胸甲
 item.scorpplatecave.name=洞穴蝎子胸甲
 item.scorpplatefrost.name=冰霜蝎子胸甲
@@ -187,7 +187,7 @@ item.scrolloffreedom.name=自由卷轴
 item.scrollofowner.name=重置所有者卷轴
 item.scrollofsale.name=出售卷轴
 item.sharksword.name=鲨鱼剑
-item.sharkteeth.name=鲨鱼牙
+item.sharkteeth.name=鲨鱼牙齿
 item.staffportal.name=翼龙传送法杖
 item.staffteleport.name=传送法杖
 item.sugarlump.name=糖块
@@ -241,7 +241,7 @@ entity.MoCreatures.HellRat.name=下界大鼠
 entity.MoCreatures.HorseMob.name=马
 entity.MoCreatures.JellyFish.name=水母
 entity.MoCreatures.Kitty.name=猫咪
-entity.MoCreatures.KittyBed.name=猫咪床
+entity.MoCreatures.KittyBed.name=猫窝
 entity.MoCreatures.LitterBox.name=猫砂盆
 entity.MoCreatures.KomodoDragon.name=科莫多龙
 entity.MoCreatures.Maggot.name=蛆虫
@@ -278,18 +278,18 @@ entity.MoCreatures.Wyvern.name=翼龙
 keyBind.MoCreatures.dive=Mo'Creatures：潜水/向下飞行
 
 
-amulet_and_fishnet_desc.MoCreatures.ownedBy=%1$s的所有物品
+amulet_and_fishnet_desc.MoCreatures.ownedBy=所有者：%1$s
 
 
-item.scrolloffreedom.desc.line1=给宠物命名和解除控制。
-item.scrolloffreedom.desc.line2=仅供宠物主人和管理员使用。
+item.scrolloffreedom.desc.line1=清除宠物的名称并解除驯服状态。
+item.scrolloffreedom.desc.line2=仅限宠物主人和服务器管理员使用。
 
-item.scrollofsale.desc.line1=取消对宠物的所有权。
-item.scrollofsale.desc.line2=可以通过奖章重新认领。
-item.scrollofsale.desc.line3=仅供宠物主人和管理员使用。
+item.scrollofsale.desc.line1=解除宠物的所有权。
+item.scrollofsale.desc.line2=之后可以使用勋章重新认领宠物。
+item.scrollofsale.desc.line3=仅限宠物主人和服务器管理员使用。
 
-item.scrollofowner.desc.line1=取消对宠物的所有权。
-item.scrollofowner.desc.line2=仅限被授权的玩家使用。
+item.scrollofowner.desc.line1=解除宠物的所有权。
+item.scrollofowner.desc.line2=仅限拥有管理员权限的玩家使用。
 
 
 gui_namer.MoCreatures.chooseName=选择你的宠物的名字：
@@ -301,12 +301,12 @@ container.MoCreatures.ElephantChest=大象储物箱
 container.MoCreatures.OstrichChest=鸵鸟储物箱
 container.MoCreatures.WyvernChest=翼龙储物箱
 
-notify.MoCreatures.egg_hatching=蛋即将孵化！请保持观察！如果您离开该区域，位于%1$s， %2$s， %3$s的孵化生物如果离开该区域将会消失。
+notify.MoCreatures.egg_hatching=蛋即将孵化！请留意！如果你离开该区域，位于坐标 %1$s，%2$s，%3$s 的孵化生物将会消失。
 
-notify.MoCreatures.max_pet_count_reached=无法驯服更多生物。您已达到服务器设定的%1$s个宠物的上限。
+notify.MoCreatures.max_pet_count_reached=无法驯服更多生物。你已达到服务器所有者设置的宠物数量上限：%1$s。
 
 
-death.MoCreatures.attack.dehydration=%1$s死于脱水
+death.MoCreatures.attack.dehydration=%1$s因脱水而死亡。
 
 
 
@@ -314,281 +314,281 @@ death.MoCreatures.attack.dehydration=%1$s死于脱水
 achievements.MoCreaturesTab=Mo' Creatures
 
 achievement.MoCreatures.craft_saddle=鞍具制造者
-achievement.MoCreatures.craft_saddle.desc=制作一个鞍具。将其装备在可骑乘的宠物身上以进行骑行。你也可以使用剪刀从佩戴鞍具或其他装备的宠物身上取下它们。
+achievement.MoCreatures.craft_saddle.desc=制作一个鞍具，并将其装备在可骑乘的宠物身上，以便骑乘。你也可以对佩戴鞍具或其他装备的宠物使用剪刀，将这些装备卸下
 
-achievement.MoCreatures.tier2_horse=二级马匹
-achievement.MoCreatures.tier2_horse.desc=使用苹果驯服任何普通的Mo' Creatures马匹。
+achievement.MoCreatures.tier2_horse=二级马
+achievement.MoCreatures.tier2_horse.desc=使用苹果驯服任意一匹普通的 Mo' Creatures 马
 
-achievement.MoCreatures.tier3_horse=三级马匹
-achievement.MoCreatures.tier3_horse.desc=使用南瓜、蛋糕或蘑菇炖菜等食物，将正确等级的Mo' Creatures马匹与正确的Minecraft原版马匹繁殖。
+achievement.MoCreatures.tier3_horse=三级马
+achievement.MoCreatures.tier3_horse.desc=使用南瓜、蛋糕或蘑菇煲，将对应的二级马匹与对应的 Minecraft 原版马匹配种
 
-achievement.MoCreatures.tier4_horse=四级马匹
-achievement.MoCreatures.tier4_horse.desc=使用南瓜、蛋糕或蘑菇炖菜等食物，将正确等级的Mo' Creatures马匹与正确的Minecraft原版马匹繁殖。
+achievement.MoCreatures.tier4_horse=四级马
+achievement.MoCreatures.tier4_horse.desc=使用南瓜、蛋糕或蘑菇煲，将对应的三级马匹与对应的 Minecraft 原版马匹配种
 
 achievement.MoCreatures.zebra=斑马驯养师
-achievement.MoCreatures.zebra.desc=使用四级马匹接近一只斑马，然后用苹果喂它来驯服它。斑马出现在草原生态环境中。
+achievement.MoCreatures.zebra.desc=骑着四级马匹接近斑马，然后用苹果喂食即可驯服它。斑马生成于热带草原类生物群系
 
 achievement.MoCreatures.zebra_record=Shuffling
-achievement.MoCreatures.zebra_record.desc=通过用驯服的斑马喂养任何Minecraft原版音乐唱片来获取一张斑马记录。这是斑马们最喜欢的歌曲。
+achievement.MoCreatures.zebra_record.desc=给驯服的斑马喂食任意一张 Minecraft 原版音乐唱片，即可获得斑马唱片。这是斑马最喜欢的音乐
 
 achievement.MoCreatures.zonkey=斑驴
-achievement.MoCreatures.zonkey.desc=使用南瓜、蛋糕或蘑菇煲喂养驯服的斑马和原版Minecraft的驴，使其繁殖。这种马可以携带一个箱子。
+achievement.MoCreatures.zonkey.desc=使用南瓜、蛋糕或蘑菇煲，让驯服的斑马与 Minecraft 原版驴繁殖。斑驴可以携带一个箱子
 
 achievement.MoCreatures.zorse=杂交马
-achievement.MoCreatures.zorse.desc=使用南瓜、蛋糕或蘑菇炖菜等食物，将已被驯服的斑马与其他任何马匹繁殖。
+achievement.MoCreatures.zorse.desc=使用南瓜、蛋糕或蘑菇煲，让驯服的斑马与任意其他马匹繁殖
 
 achievement.MoCreatures.heart_undead=亡灵之心
-achievement.MoCreatures.heart_undead.desc=从亡灵马怪物获得一颗亡灵之心。
+achievement.MoCreatures.heart_undead.desc=从亡灵马怪物获得一颗亡灵之心
 
 achievement.MoCreatures.essence_undead=亡灵精华
-achievement.MoCreatures.essence_undead.desc=制作一瓶亡灵精华。
+achievement.MoCreatures.essence_undead.desc=制作一瓶亡灵精华
 
 achievement.MoCreatures.undead_horse=亡灵马
-achievement.MoCreatures.undead_horse.desc=通过用亡灵精华喂养宠物杂交马或特殊马匹来获得一匹亡灵马。这匹马只能通过亡灵精华进行治疗。
+achievement.MoCreatures.undead_horse.desc=使用亡灵精华喂养宠物杂交马或特殊马匹，即可获得亡灵马。生命值不超过 50 点的亡灵生物会忽略这匹马的骑乘者。亡灵马只能使用亡灵精华治疗
 
 achievement.MoCreatures.amulet_bone=骷髅马存储
-achievement.MoCreatures.amulet_bone.desc=制作一枚骨头护身符。
+achievement.MoCreatures.amulet_bone.desc=制作一枚骨头护身符
 
 
 achievement.MoCreatures.ghost_horse=幽灵马
-achievement.MoCreatures.ghost_horse.desc=获得一匹宠物幽灵马。有时候，当一匹三级以上的马死亡时，它可能会变成一匹幽灵马。这匹马只能通过亡灵精华进行治疗。
+achievement.MoCreatures.ghost_horse.desc=获得一匹宠物幽灵马。三级及以上的马匹死亡时，有时会变成幽灵马。生命值不超过 50 点的亡灵生物会忽略这匹马的骑乘者。幽灵马只能使用亡灵精华治疗
 
 achievement.MoCreatures.amulet_ghost=幽灵马存储
-achievement.MoCreatures.amulet_ghost.desc=制作一枚幽灵护身符。
+achievement.MoCreatures.amulet_ghost.desc=制作一枚幽灵护身符
 
 achievement.MoCreatures.heart_fire=火焰之心
-achievement.MoCreatures.heart_fire.desc=从噩梦马怪物获得一颗火焰之心。
+achievement.MoCreatures.heart_fire.desc=从噩梦马怪物获得一颗火焰之心
 
 achievement.MoCreatures.essence_fire=火焰精华
-achievement.MoCreatures.essence_fire.desc=制作一瓶火焰精华。
+achievement.MoCreatures.essence_fire.desc=制作一瓶火焰精华
 
 achievement.MoCreatures.nightmare_horse=噩梦马
-achievement.MoCreatures.nightmare_horse.desc=通过用火焰精华喂养宠物杂交马来获得一匹噩梦马。这匹马具有防火属性。这匹马只能通过火焰精华进行治疗。
+achievement.MoCreatures.nightmare_horse.desc=使用火焰精华喂养宠物杂交马，即可获得噩梦马。噩梦马不会受到火焰伤害，并且只能使用火焰精华治疗
 
 achievement.MoCreatures.heart_darkness=黑暗之心
-achievement.MoCreatures.heart_darkness.desc=从蝙蝠马怪物获得一颗黑暗之心。
+achievement.MoCreatures.heart_darkness.desc=从蝙蝠马怪物获得一颗黑暗之心
 
 achievement.MoCreatures.essence_darkness=黑暗精华
-achievement.MoCreatures.essence_darkness.desc=制作一瓶黑暗精华。
+achievement.MoCreatures.essence_darkness.desc=制作一瓶黑暗精华
 
 achievement.MoCreatures.bat_horse=蝙蝠马
-achievement.MoCreatures.bat_horse.desc=通过用黑暗精华喂养宠物杂交马来获得一匹蝙蝠马。这匹马可以飞行。这匹马只能通过黑暗精华进行治疗。
+achievement.MoCreatures.bat_horse.desc=使用黑暗精华喂养宠物杂交马，即可获得蝙蝠马。蝙蝠马可以飞行，并且只能使用黑暗精华治疗
 
 achievement.MoCreatures.crystal_horse_armor=水晶马铠
-achievement.MoCreatures.crystal_horse_armor.desc=制作水晶马铠。这是最强大的马铠，只能由特殊马匹穿戴。
+achievement.MoCreatures.crystal_horse_armor.desc=制作水晶马铠这是最强大的马铠，只能由特殊马匹穿戴
 
 achievement.MoCreatures.essence_light=光明精华
-achievement.MoCreatures.essence_light.desc=通过结合三种基础精华制作一瓶光明精华。
+achievement.MoCreatures.essence_light.desc=通过结合三种基础精华制作一瓶光明精华
 
 achievement.MoCreatures.pegasus=飞马
-achievement.MoCreatures.pegasus.desc=通过在y坐标高于150的位置用光明精华喂养宠物蝙蝠马来获得一匹飞马。这匹马可以飞行并携带一个箱子。这匹马只能通过光明精华进行治疗。
+achievement.MoCreatures.pegasus.desc=在 Y 坐标高于 150 的位置，使用光明精华喂养宠物蝙蝠马，即可获得飞马。飞马可以飞行、恢复生命值并携带一个箱子，而且只能使用光明精华治疗
 
 achievement.MoCreatures.unicorn=独角兽
-achievement.MoCreatures.unicorn.desc=通过用光明精华喂养宠物噩梦马来获得一匹独角兽。这匹马可以冲撞并滑翔。这匹马只能通过光明精华进行治疗。
+achievement.MoCreatures.unicorn.desc=使用光明精华喂养宠物噩梦马，即可获得独角兽。独角兽可以恢复生命值、冲撞和滑翔，并且只能使用光明精华治疗
 
-achievement.MoCreatures.amulet_sky=飞马储物
-achievement.MoCreatures.amulet_sky.desc=制作一枚天空护符。护符的制作配方中的火焰可以从下界大鼠获取。
+achievement.MoCreatures.amulet_sky=飞马储存
+achievement.MoCreatures.amulet_sky.desc=制作一枚天空护符。护符配方中所需的火焰可以从下界大鼠身上获得
 
 achievement.MoCreatures.dark_pegasus=暗黑飞马
-achievement.MoCreatures.dark_pegasus.desc=通过用黑暗精华喂养宠物飞马来获得一匹暗黑飞马。这是最强大的马匹，具有防火属性，可以飞行并携带一个箱子。这匹马只能通过光明精华进行治疗。
+achievement.MoCreatures.dark_pegasus.desc=使用黑暗精华喂养宠物飞马，即可获得暗黑飞马。这是最强大的马匹，具有防火能力，可以飞行、恢复生命值并携带一个箱子。暗黑飞马只能使用光明精华治疗
 
 achievement.MoCreatures.fairy_horse=仙马！
-achievement.MoCreatures.fairy_horse.desc=通过使用光明精华将飞马和独角兽培育而成一匹仙马。这是最快的飞行马匹，也可以携带一个箱子，并且在地面上可以冲撞。喂给这匹马一种染料可以永久改变它的仙族类型。这匹马只能通过光明精华进行治疗。
+achievement.MoCreatures.fairy_horse.desc=使用光明精华让飞马与独角兽繁殖，即可获得仙马。仙马是飞行速度最快的马匹，可以恢复生命值、携带箱子并进行冲撞。给它喂食染料可以改变仙族类型。仙马只能使用光明精华治疗
 
-achievement.MoCreatures.amulet_fairy=仙女储物
-achievement.MoCreatures.amulet_fairy.desc=制作一枚仙女护符。护符的制作配方中的火焰可以从下界大鼠获取。
+achievement.MoCreatures.amulet_fairy=仙马储存
+achievement.MoCreatures.amulet_fairy.desc=制作一枚仙马护符。护符配方中所需的火焰可以从下界大鼠身上获得
 
 achievement.MoCreatures.wyvern_portal_staff=翼龙巢穴传送杖
-achievement.MoCreatures.wyvern_portal_staff.desc=制作一把翼龙巢穴传送杖并前往翼龙巢穴。
+achievement.MoCreatures.wyvern_portal_staff.desc=制作一把翼龙传送杖并前往翼龙巢穴。若要返回主世界，请对石英传送门中央的方块使用翼龙传送杖
 
 achievement.MoCreatures.wyvern_egg=最快的伙伴
-achievement.MoCreatures.wyvern_egg.desc=要获得一枚翼龙蛋，你需要从一只母翼龙那里获取。宠物翼龙喜欢吃生的老鼠和兔子。成年的宠物翼龙可以被骑乘，装备上Minecraft原版的马铠，并且能够携带一个箱子。此外，某些类型的翼龙，如丛林、沼泽、热带草原、沙漠和母翼龙，在被喂食特定精华时可能会有不同的反应。
+achievement.MoCreatures.wyvern_egg.desc=从母翼龙那里获得一枚翼龙蛋。宠物翼龙喜欢吃生鼠肉和生兔肉。成年宠物翼龙可以骑乘、装备 Minecraft 原版马铠并携带箱子。丛林、沼泽、热带草原、沙漠和母翼龙在进食时会对某些精华产生反应
 
 achievement.MoCreatures.tame_elephant=驯服大象者
-achievement.MoCreatures.tame_elephant.desc=使用许多糖块来驯服一只幼年大象或猛犸象。
+achievement.MoCreatures.tame_elephant.desc=使用大量糖块驯服一只幼年大象或猛犸象
 
 achievement.MoCreatures.mount_elephant=骑乘大象者
-achievement.MoCreatures.mount_elephant.desc=使用大象鞍马具骑乘一只驯服的成年大象或猛犸象。你需要先让它坐下，然后才能爬上去。你可以通过悄悄接近它来让大象坐下。
+achievement.MoCreatures.mount_elephant.desc=使用大象挽具骑乘已驯服的成年大象或猛犸象。骑乘前需要先让它坐下。潜行并靠近大象即可使其坐下
 
 achievement.MoCreatures.mammoth_platform=双人平台
-achievement.MoCreatures.mammoth_platform.desc=在戴着大象鞍具的猛犸象身上放置一块猛犸平台。当猛犸象安装了猛犸平台后，两名玩家可以共同骑乘江猛犸象。第二名玩家可以通过在猛犸象附近跳跃的方式，爬上平台，而此时猛犸象正处于坐姿并被另一名玩家骑乘的状态。
+achievement.MoCreatures.mammoth_platform.desc=使用大象挽具将猛犸平台装到一只松花江猛犸象身上。装有平台的猛犸象可以供两名玩家骑乘。当猛犸象坐下并由另一名玩家骑乘时，第二名玩家可以在它附近跳跃以登上平台
 
 achievement.MoCreatures.elephant_garment=亚洲象时尚
-achievement.MoCreatures.elephant_garment.desc=给亚洲象穿上一件象服。
+achievement.MoCreatures.elephant_garment.desc=给一头亚洲象穿上象服
 
 achievement.MoCreatures.elephant_tusks=战斗准备
-achievement.MoCreatures.elephant_tusks.desc=当你给大象或猛犸象装备上任何一对獠牙时，就能够实现这个成就。当大象或猛犸象佩戴着长牙时，它们可以被驯服以用来冲撞并摧毁面前的方块。方块破坏的效果取决于大象的种类和所佩戴的獠牙的类型。
+achievement.MoCreatures.elephant_tusks.desc=给大象或猛犸象装备任意一对獠牙。装备獠牙后，可以用鞭子驱使它们向前冲撞并摧毁前方的方块。方块破坏效果取决于大象的种类以及所装备的獠牙
 
-achievement.MoCreatures.elephant_chest=大象行李箱
-achievement.MoCreatures.elephant_chest.desc=在穿戴大象挽具的大象或猛犸象身上放置一个大象行李箱。大象和猛犸象可以携带两个大象行李箱。当携带两个大象行李箱时，猛犸象还可以额外装备两个Minecraft原版箱子。您可以使用钥匙打开这些箱子。
+achievement.MoCreatures.elephant_chest=大象储物箱
+achievement.MoCreatures.elephant_chest.desc=使用大象挽具将大象储物箱装到大象或猛犸象身上。它们最多可以携带两个大象储物箱。携带两个大象储物箱的猛犸象还可以额外装备两个 Minecraft 原版箱子。按住潜行键并右键点击即可打开箱子
 
 achievement.MoCreatures.elephant_howdah=殿下
-achievement.MoCreatures.elephant_howdah.desc=在穿着象服的亚洲象上放置一个象座。
+achievement.MoCreatures.elephant_howdah.desc=给穿着象服的亚洲象装备象轿
 
 achievement.MoCreatures.craft_medallion=通用改名
-achievement.MoCreatures.craft_medallion.desc=制作一个勋章。你可以用它来更改已驯服生物的名称。
+achievement.MoCreatures.craft_medallion.desc=制作一个勋章。你可以用它来更改已驯服生物的名称
 
 achievement.MoCreatures.tame_kitty=猫咪驯服师
-achievement.MoCreatures.tame_kitty.desc=通过在猫咪附近放置一些煮熟的鱼，在猫咪吃了一些鱼后给它戴上勋章来驯服猫咪。
+achievement.MoCreatures.tame_kitty.desc=将煮熟的鱼丢在猫咪附近。等猫咪吃下部分鱼后，再给它戴上勋章即可驯服
 
 achievement.MoCreatures.kitty_litter_box=猫砂盆
-achievement.MoCreatures.kitty_litter_box.desc=制作一个猫砂盆。
+achievement.MoCreatures.kitty_litter_box.desc=制作一个猫砂盆
 
-achievement.MoCreatures.kitty_litter=猫的事务
-achievement.MoCreatures.kitty_litter.desc=使用沙子亲自清洁一个已使用过的猫砂盆。以后你可以使用发射器自动化这个过程。
+achievement.MoCreatures.kitty_litter=猫砂盆清洁
+achievement.MoCreatures.kitty_litter.desc=使用沙子手动清理用过的猫砂盆。之后可以使用发射器自动完成清理
 
 achievement.MoCreatures.wool_ball=猫咪玩耍时间
-achievement.MoCreatures.wool_ball.desc=制作一个羊毛球，然后给好奇的猫咪玩耍。
+achievement.MoCreatures.wool_ball.desc=制作一个羊毛球，并把它交给好奇的猫咪玩耍
 
 achievement.MoCreatures.kitty_bed=猫窝
-achievement.MoCreatures.kitty_bed.desc=制作任意一款猫窝。
+achievement.MoCreatures.kitty_bed.desc=制作任意一款猫窝
 
 achievement.MoCreatures.pet_food=喂猫
-achievement.MoCreatures.pet_food.desc=使用牛奶或猫粮亲自填充猫窝。以后你可以使用发射器自动化这个过程。
+achievement.MoCreatures.pet_food.desc=使用牛奶或猫粮手动填充猫窝。之后可以使用发射器自动完成这个过程
 
 achievement.MoCreatures.breed_kitty=猫咪繁育者
-achievement.MoCreatures.breed_kitty.desc=使用蛋糕或鱼，在两只猫咪都开心的时候，在猫咪床旁边让它们繁殖。
+achievement.MoCreatures.breed_kitty.desc=当两只猫咪都处于开心状态时，在猫窝旁使用蛋糕或鱼让它们繁殖
 
 achievement.MoCreatures.tame_big_cat=大型猫科动物驯服师
-achievement.MoCreatures.tame_big_cat.desc=通过在大型猫科动物附近放置一些生肉，在大型猫科动物吃了一些肉后给它戴上勋章来驯服大型猫科动物。
+achievement.MoCreatures.tame_big_cat.desc=将生肉丢在幼年大型猫科动物附近。等它吃下足够多的肉后，再给它戴上勋章即可驯服
 
 achievement.MoCreatures.big_cat_claw=大型猫科动物猎手
-achievement.MoCreatures.big_cat_claw.desc=获得一只大型猫科动物的爪子。
+achievement.MoCreatures.big_cat_claw.desc=获得一只大型猫科动物的爪子
 
-achievement.MoCreatures.craft_whip=抽打鞭子的时候到了！
-achievement.MoCreatures.craft_whip.desc=制作一根鞭子。用它让已驯服的生物坐下。在骑乘生物时使用鞭子可以让它冲刺。在骑乘噩梦马、独角兽、独角兽鸵鸟或大象时使用鞭子可以产生特殊效果。
+achievement.MoCreatures.craft_whip=是时候挥鞭了！
+achievement.MoCreatures.craft_whip.desc=制作一根鞭子。使用鞭子可以让已驯服的生物坐下；骑乘生物时使用鞭子可以使其冲刺。骑乘噩梦马、独角兽、独角鸵鸟或大象时，还可以用鞭子触发它们的特殊能力
 
 achievement.MoCreatures.indiana=就像印第安纳·琼斯一样
-achievement.MoCreatures.indiana.desc=对已驯服的大型猫科动物使用鞭子超过六次。
+achievement.MoCreatures.indiana.desc=对已驯服的大型猫科动物使用鞭子六次以上
 
 achievement.MoCreatures.shark_tooth=鲨鱼拳击手
-achievement.MoCreatures.shark_tooth.desc=获得一颗鲨鱼的牙齿。
+achievement.MoCreatures.shark_tooth.desc=获得一颗鲨鱼的牙齿
 
 achievement.MoCreatures.fish_net=捕鱼的时候到了
-achievement.MoCreatures.fish_net.desc=制作一个渔网。用它来捕捉和驯服大多数水生生物。你还可以用它来存放任何水生宠物。
+achievement.MoCreatures.fish_net.desc=制作一个渔网。渔网可以用来捕捉和驯服大多数水生生物，也可以用来存放任何水生宠物
 
 achievement.MoCreatures.shark_sword=锋利的鲨鱼剑
-achievement.MoCreatures.shark_sword.desc=制作一把鲨鱼剑。鲨鱼剑可以使用鲨鱼牙在铁砧上修复。
+achievement.MoCreatures.shark_sword.desc=制作一把鲨鱼剑。可以在铁砧上使用鲨鱼牙齿修复鲨鱼剑
 
 achievement.MoCreatures.catch_fish_in_fish_bowl=鱼缸里的小鱼儿
-achievement.MoCreatures.catch_fish_in_fish_bowl.desc=将一条小鱼捕捉到鱼缸中。
+achievement.MoCreatures.catch_fish_in_fish_bowl.desc=将一条小鱼捕捉到鱼缸中
 
 achievement.MoCreatures.tame_bird=鸟儿驯服师
-achievement.MoCreatures.tame_bird.desc=通过在鸟儿附近放置任何种子并在它吃了一些掉落的种子后亲自喂食种子来驯服一只鸟儿。如果你将一只宠物鸟放在你的头上，它们会减缓你从高处掉落的速度。
+achievement.MoCreatures.tame_bird.desc=将任意种子丢在鸟儿附近。等它吃下地上的种子后，再亲自喂它种子即可驯服。把宠物鸟放在头上，可以减缓你从高处下落的速度
 
 achievement.MoCreatures.feed_snake_with_live_mouse=活体喂养
-achievement.MoCreatures.feed_snake_with_live_mouse.desc=给一只成年宠物蛇喂食活老鼠。拿着一只活老鼠，按住Shift键并右键点击一只成年宠物蛇。
+achievement.MoCreatures.feed_snake_with_live_mouse.desc=给成年宠物蛇喂食活老鼠。手持活老鼠，按住 Shift 键并右键点击成年宠物蛇即可
 
 achievement.MoCreatures.tame_panda=熊猫驯服师
-achievement.MoCreatures.tame_panda.desc=使用甘蔗或竹子驯服一只幼小的熊猫。
+achievement.MoCreatures.tame_panda.desc=使用甘蔗或竹子驯服一只幼年熊猫
 
 achievement.MoCreatures.tame_scorpion=蝎子驯服师
-achievement.MoCreatures.tame_scorpion.desc=用空手抚摸一只小蝎子来驯服它。宠物蝎子喜欢吃腐肉和老鼠肉。一旦完全长大，你就可以骑着它们上墙了。如果给成年宠物蝎子喂食黑暗精华，它会下蛋。
+achievement.MoCreatures.tame_scorpion.desc=空手抚摸幼年蝎子即可驯服它。宠物蝎子喜欢吃腐肉和鼠肉。成年后可以骑乘它们攀爬墙壁。给成年宠物蝎子喂食黑暗精华，它就会产下一枚蛋
 
 achievement.MoCreatures.ostrich_egg=偷蛋贼
-achievement.MoCreatures.ostrich_egg.desc=使用西瓜籽繁殖野生鸵鸟夫妇并偷走它们的蛋。宠物鸵鸟成年后可以骑行。宠物鸵鸟也可以用精华转化。
+achievement.MoCreatures.ostrich_egg.desc=使用西瓜种子让一只野生黑色鸵鸟和一只野生棕色鸵鸟繁殖，然后偷走它们产下的蛋。宠物鸵鸟成年后即可骑乘
 
 achievement.MoCreatures.ostrich_helmet=防护装备
-achievement.MoCreatures.ostrich_helmet.desc=将任何原版或Mo' Creatures的头盔放在成年宠物鸵鸟身上。
+achievement.MoCreatures.ostrich_helmet.desc=给成年宠物鸵鸟装备任意 Minecraft 原版或 Mo' Creatures 头盔
 
-achievement.MoCreatures.ostrich_chest=鸵鸟行李箱
-achievement.MoCreatures.ostrich_chest.desc=在成年宠物鸵鸟上放置一个箱子。你可以使用钥匙打开箱子。
+achievement.MoCreatures.ostrich_chest=鸵鸟储物箱
+achievement.MoCreatures.ostrich_chest.desc=给成年宠物鸵鸟装上一个箱子。按住潜行键并右键点击即可打开箱子
 
-achievement.MoCreatures.ostrich_flag=旗帜扛手
-achievement.MoCreatures.ostrich_flag.desc=在携带箱子的鸵鸟身上放置任何羊毛块。
+achievement.MoCreatures.ostrich_flag=旗手
+achievement.MoCreatures.ostrich_flag.desc=给携带箱子的鸵鸟装备任意羊毛方块
 
 achievement.MoCreatures.wyvern_ostrich=飞龙鸵鸟
-achievement.MoCreatures.wyvern_ostrich.desc=用黑暗精华喂养一只成年宠物鸵鸟获得飞龙鸵鸟。这种鸵鸟可以飞行冲刺。可以用黑暗精华治疗这种鸵鸟。
+achievement.MoCreatures.wyvern_ostrich.desc=使用黑暗精华喂养成年宠物鸵鸟，即可获得飞龙鸵鸟。飞龙鸵鸟可以飞行并冲刺，并且只能使用黑暗精华治疗
 
 achievement.MoCreatures.undead_ostrich=亡灵鸵鸟
-achievement.MoCreatures.undead_ostrich.desc=用亡灵精华喂养一只成年宠物鸵鸟获得亡灵鸵鸟。这种鸵鸟的骑手会被最多50点生命值的亡灵生物忽略。可以用亡灵精华治疗这种鸵鸟。
+achievement.MoCreatures.undead_ostrich.desc=使用亡灵精华喂养成年宠物鸵鸟，即可获得亡灵鸵鸟。生命值不超过 50 点的亡灵生物会忽略这只鸵鸟的骑乘者。亡灵鸵鸟只能使用亡灵精华治疗
 
 achievement.MoCreatures.unihorn_ostrich=独角鸵鸟
-achievement.MoCreatures.unihorn_ostrich.desc=用光明精华喂养一只成年宠物鸵鸟获得独角鸵鸟。这种鸵鸟可以再生和冲撞。可以用光明精华治疗这种鸵鸟。
+achievement.MoCreatures.unihorn_ostrich.desc=使用光明精华喂养成年宠物鸵鸟，即可获得独角鸵鸟。独角鸵鸟可以恢复生命值并进行冲撞，而且只能使用光明精华治疗
 
 achievement.MoCreatures.nether_ostrich=下界鸵鸟
-achievement.MoCreatures.nether_ostrich.desc=用火焰精华喂养一只成年宠物鸵鸟获得下界鸵鸟。这种鸵鸟可以飞行跳跃。可以用火焰精华治疗这种鸵鸟。
+achievement.MoCreatures.nether_ostrich.desc=使用火焰精华喂养成年宠物鸵鸟，即可获得下界鸵鸟。下界鸵鸟可以飞跃，并且只能使用火焰精华治疗
 
 achievement.MoCreatures.tame_dolphin=海豚驯服者
-achievement.MoCreatures.tame_dolphin.desc=骑乘成年海豚来驯服它们。海豚保护骑手免受鲨鱼攻击，并且可以在靠近水面时跳跃。不同品种的海豚速度和跳跃能力各不相同，成年海豚可以使用鱼进行繁殖。
+achievement.MoCreatures.tame_dolphin.desc=骑乘成年海豚即可驯服它们。海豚可以保护骑乘者免受鲨鱼攻击，并能在水面附近跃出水面。不同品种的海豚速度和跳跃能力各不相同；成年海豚可以使用鱼进行繁殖
 
-achievement.MoCreatures.pet_amulet=宠物储存
-achievement.MoCreatures.pet_amulet.desc=制作一枚宠物护符。用它来储存几乎所有驯服的生物。
+achievement.MoCreatures.pet_amulet=宠物收纳
+achievement.MoCreatures.pet_amulet.desc=制作一枚宠物护符。使用它可以收纳几乎所有已驯服的生物
 
 achievement.MoCreatures.milk_goat=山羊挤奶员
-achievement.MoCreatures.milk_goat.desc=使用桶从成年母山羊身上挤奶。如果你愿意，可以使用任何食物驯服山羊。
+achievement.MoCreatures.milk_goat.desc=使用桶给成年母山羊挤奶。你也可以使用任意食物驯服山羊
 
 achievement.MoCreatures.cook_omelette=阳光面朝上
-achievement.MoCreatures.cook_omelette.desc=煮熟任何鸡蛋。
+achievement.MoCreatures.cook_omelette.desc=烹饪任意一种蛋
 
 achievement.MoCreatures.cook_turkey=比鸡更丰盛
-achievement.MoCreatures.cook_turkey.desc=煮熟生的火鸡。
+achievement.MoCreatures.cook_turkey.desc=烹饪生火鸡肉
 
 achievement.MoCreatures.cook_ostrich=更像牛肉的味道
-achievement.MoCreatures.cook_ostrich.desc=煮熟生的鸵鸟肉。
+achievement.MoCreatures.cook_ostrich.desc=烹饪生鸵鸟肉
 
 achievement.MoCreatures.cook_rat=像鸡肉的味道
-achievement.MoCreatures.cook_rat.desc=煮熟生的大鼠肉。
+achievement.MoCreatures.cook_rat.desc=烹饪生鼠肉
 
-achievement.MoCreatures.rat_burger=美食大鼠汉堡
-achievement.MoCreatures.rat_burger.desc=制作一份大鼠肉汉堡。
+achievement.MoCreatures.rat_burger=大鼠肉汉堡
+achievement.MoCreatures.rat_burger.desc=制作一份鼠肉汉堡
 
 achievement.MoCreatures.cook_crab=海鲜经典
-achievement.MoCreatures.cook_crab.desc=煮熟生的螃蟹。
+achievement.MoCreatures.cook_crab.desc=烹饪生螃蟹
 
 achievement.MoCreatures.cook_turtle=可疑美味
-achievement.MoCreatures.cook_turtle.desc=制作龟肉汤。
+achievement.MoCreatures.cook_turtle.desc=制作一份龟肉汤
 
 achievement.MoCreatures.kill_wraith=驱魂者
-achievement.MoCreatures.kill_wraith.desc=击败一个幽灵。
+achievement.MoCreatures.kill_wraith.desc=击杀一个幽灵
 
 achievement.MoCreatures.kill_ogre=食人魔屠戮者
-achievement.MoCreatures.kill_ogre.desc=击败一个食人魔。
+achievement.MoCreatures.kill_ogre.desc=击杀一个食人魔
 
 achievement.MoCreatures.kill_werewolf=狼人屠戮者
-achievement.MoCreatures.kill_werewolf.desc=在狼形态下击败一个狼人。
+achievement.MoCreatures.kill_werewolf.desc=在狼人处于狼形态时将其击杀
 
 achievement.MoCreatures.kill_big_golem=傀儡屠戮者
-achievement.MoCreatures.kill_big_golem.desc=杀死一只大傀儡并获得它的中心方块。
+achievement.MoCreatures.kill_big_golem.desc=击杀一只大型傀儡并获得它的中心方块
 
 achievement.MoCreatures.leonardo=莱昂纳多
-achievement.MoCreatures.leonardo.desc=从一个莱昂纳多龟中获得一把武士刀。可以通过在它们附近放置甘蔗或西瓜片，可以驯服龟。武士刀可以使用铁锭在铁砧上修复。
+achievement.MoCreatures.leonardo.desc=从莱昂纳多龟身上获得一把武士刀。将甘蔗或西瓜片丢在乌龟附近即可驯服它们。可以在铁砧上使用铁锭修复武士刀
 
 achievement.MoCreatures.raphael=拉斐尔
-achievement.MoCreatures.raphael.desc=从一个拉斐尔龟中获得一把三叉戟。可以通过在它们附近放置甘蔗或西瓜片，可以驯服龟。三叉戟以使用铁锭在铁砧上修复。
+achievement.MoCreatures.raphael.desc=从拉斐尔龟身上获得一把铁尺。将甘蔗或西瓜片丢在乌龟附近即可驯服它们。可以在铁砧上使用铁锭修复铁尺
 
-achievement.MoCreatures.donatello=多尼
-achievement.MoCreatures.donatello.desc=从多尼龟那里获得一根长棍。可以通过在它们附近放置甘蔗或西瓜片来驯服乌龟。
+achievement.MoCreatures.donatello=多纳泰罗
+achievement.MoCreatures.donatello.desc=从多纳泰罗龟身上获得一根长棍。将甘蔗或西瓜片丢在乌龟附近即可驯服它们
 
 achievement.MoCreatures.michelangelo=米开朗琪罗
-achievement.MoCreatures.michelangelo.desc=从米开朗琪罗龟那里获得一对双节棍。可以通过在它们附近放置甘蔗或西瓜片来驯服龟。双节棍可以使用铁锭在铁砧上修复。
+achievement.MoCreatures.michelangelo.desc=从米开朗琪罗龟身上获得一对双节棍。将甘蔗或西瓜片丢在乌龟附近即可驯服它们。可以在铁砧上使用铁锭修复双节棍
 
 achievement.MoCreatures.silver_sword=狼人的克星
-achievement.MoCreatures.silver_sword.desc=从银骷髅处获得一把银剑。
+achievement.MoCreatures.silver_sword.desc=从银骷髅身上获得一把银剑
 
 achievement.MoCreatures.get_fur=小动物屠夫
-achievement.MoCreatures.get_fur.desc=获得毛皮。
+achievement.MoCreatures.get_fur.desc=获得毛皮
 
 achievement.MoCreatures.fur_armor=爱斯基摩服饰
-achievement.MoCreatures.fur_armor.desc=制作任何一件毛皮盔甲。毛皮盔甲可以使用毛皮在铁砧上修复。
+achievement.MoCreatures.fur_armor.desc=制作任意一件毛皮盔甲。可以在铁砧上使用毛皮修复毛皮盔甲
 
 achievement.MoCreatures.get_hide=猎人
-achievement.MoCreatures.get_hide.desc=获得兽皮。
+achievement.MoCreatures.get_hide.desc=获得兽皮
 
 achievement.MoCreatures.hide_armor=猎人之选
-achievement.MoCreatures.hide_armor.desc=制作任何一件兽皮盔甲。兽皮盔甲可以使用兽皮在铁砧上修复。
+achievement.MoCreatures.hide_armor.desc=制作任意一件兽皮盔甲。可以在铁砧上使用兽皮修复兽皮盔甲
 
 achievement.MoCreatures.get_reptile_hide=爬行动物猎人
-achievement.MoCreatures.get_reptile_hide.desc=获得爬行动物皮革。
+achievement.MoCreatures.get_reptile_hide.desc=获得爬行动物皮革
 
 achievement.MoCreatures.reptile_armor=坚如铁石
-achievement.MoCreatures.reptile_armor.desc=制作任何一件爬行动物盔甲。爬行动物盔甲可以使用爬行动物皮革在铁砧上修复。
+achievement.MoCreatures.reptile_armor.desc=制作任意一件爬行动物盔甲。可以在铁砧上使用爬行动物皮革修复爬行动物盔甲
 
 achievement.MoCreatures.get_scorpion_material=蝎子猎人
-achievement.MoCreatures.get_scorpion_material.desc=获得任意蝎子的外壳或蝎尾毒液。
+achievement.MoCreatures.get_scorpion_material.desc=获得任意一种蝎子甲壳或蝎尾毒刺
 
 achievement.MoCreatures.scorpion_sword=蝎子剑士
-achievement.MoCreatures.scorpion_sword.desc=制作任何一把蝎子剑。蝎子剑可以使用钻石在铁砧上修复。
+achievement.MoCreatures.scorpion_sword.desc=制作任意一把蝎子剑。可以在铁砧上使用钻石修复蝎子剑
 
 achievement.MoCreatures.scorpion_armor=蝎子勇士
-achievement.MoCreatures.scorpion_armor.desc=制作任意一件蝎子护甲。全套装备同种类的护甲将获得套装加成。可以使用相同类型的蝎子外壳在铁砧上修复蝎子护甲。
+achievement.MoCreatures.scorpion_armor.desc=制作任意一件蝎子护甲。穿齐同一种类的蝎子护甲可以获得独特的套装加成。可以在铁砧上使用相同种类的蝎子甲壳修复蝎子护甲
